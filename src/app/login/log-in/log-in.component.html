@@ -1,1 +1,63 @@
-<p>log-in works!</p>
+<div class="logo-container" (animationend)="onLogoAnimationEnd()">
+  <img src="assets/img/logo.svg" alt="Logo" class="logo">
+</div>
+
+<div class="centered-container" [class.visible]="isLogoAnimationComplete">
+    
+    <div class="sign-in-container">
+        <span>Not a Join User?</span>
+        <button [routerLink]="'/sign-up'">Sign up</button>
+    </div>
+    <mat-card class="login-container" appearance="outlined">
+      <mat-card-title>
+        <h1 class="title">Log in</h1>
+        <div class="line"></div>
+      </mat-card-title>
+      <mat-card-content>
+        <div class="input-container">
+          <!-- Email Field -->
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="email" id="email" matInput [formControl]="emailFormControl" />
+            <mat-icon matSuffix>mail</mat-icon>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Password Field -->
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password" id="password" matInput [formControl]="passwordFormControl" />
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="passwordFormControl.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="passwordFormControl.hasError('minlength')">
+              Password must be at least 6 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Buttons -->
+        <div class="button-group">
+          <button class="login-btn" mat-flat-button [disabled]="loginForm.invalid">
+            Login
+          </button>
+          <button class="guest-btn" mat-stroked-button>
+            Guest Log in
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <div class="links">
+        <span>Privacy Policy</span>
+        <span>Legal Notice</span>
+      </div>
+  </div>
+
+  
+  
