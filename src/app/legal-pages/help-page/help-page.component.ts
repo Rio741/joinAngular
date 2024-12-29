@@ -3,14 +3,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-privacy-policy',
+  selector: 'app-help-page',
   imports: [MatIconModule],
-  templateUrl: './privacy-policy.component.html',
-  styleUrl: './privacy-policy.component.scss'
+  templateUrl: './help-page.component.html',
+  styleUrl: './help-page.component.scss'
 })
-export class PrivacyPolicyComponent {
+export class HelpPageComponent {
   constructor(private location: Location) {}
-  
+
   goBack() {
     this.location.back();
   }

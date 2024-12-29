@@ -47,15 +47,15 @@
           <button class="login-btn" mat-flat-button [disabled]="loginForm.invalid">
             Login
           </button>
-          <button class="guest-btn" mat-stroked-button>
+          <button class="guest-btn" mat-stroked-button [routerLink]="'/kanban/summary'">
             Guest Log in
           </button>
         </div>
       </mat-card-content>
     </mat-card>
     <div class="links">
-        <span>Privacy Policy</span>
-        <span>Legal Notice</span>
+        <span [routerLink]="'/privacy-policy'">Privacy Policy</span>
+        <span [routerLink]="'/legal-notice'">Legal Notice</span>
       </div>
   </div>
 

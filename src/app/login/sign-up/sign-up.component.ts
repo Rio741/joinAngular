@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatCardModule, ReactiveFormsModule, MatIconModule, RouterModule, MatCheckboxModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatCardModule, ReactiveFormsModule, MatIconModule, RouterModule, MatCheckboxModule, RouterModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })

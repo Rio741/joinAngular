@@ -1,0 +1,87 @@
+.sidenav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 232px;
+    background-color: #2A3647;
+}
+
+.logo-container {
+    height: 120px;
+    width: 100px;
+    z-index: 999;
+    margin: 66px 0;
+
+    img {
+        height: 100%;
+        width: 100%;
+        z-index: 999;
+    }
+}
+
+.page-container {
+    color: #CDCDCD;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .page-field {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding-left: 60px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover {
+            background-color: #0d2446;
+        }
+
+        &.active {
+            background-color: #091931;  // Hintergrund beibehalten, wenn aktiv
+            color: white; 
+            cursor: default;
+        }
+    }
+}
+
+.links {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    color: #A8A8A8;
+    margin-bottom: 66px;
+
+    span {
+        cursor: pointer;
+
+        &:hover {
+            color: #29ABE2;
+        }
+    }
+}
+
+.legal-page-field{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+
+    &.active {
+        background-color: #091931;
+    }
+
+   
+}

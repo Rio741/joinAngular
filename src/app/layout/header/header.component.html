@@ -1,0 +1,17 @@
+<header>
+    <span class="headline">Kanban Project Management Tool</span>
+    <div class="button-container">
+        <div class="help-container">
+            <img src="assets/icons/help.svg" alt="Help" [routerLink]="'/kanban/help-page'">
+        </div>
+        <div class="circle" [matMenuTriggerFor]="belowMenu">
+            <span class="initials">GU</span>
+
+        </div>
+        <mat-menu #belowMenu="matMenu" xPosition="before" class="menu">
+            <button mat-menu-item class="menu-option">Legal Notice</button>
+            <button mat-menu-item class="menu-option">Privacy Policy</button>
+            <button mat-menu-item class="menu-option">Logout</button>
+        </mat-menu>
+    </div>
+</header>
