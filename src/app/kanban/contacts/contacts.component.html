@@ -1,1 +1,61 @@
-<p>contacts works!</p>
+<mat-card>
+    <div class="new-contact-container">
+        <button class="new-contact-btn">Add new contact<mat-icon>person_add</mat-icon></button>
+    </div>
+    <mat-list>
+        <ng-container *ngFor="let group of groupedContacts | keyvalue">
+            <!-- Buchstabe -->
+            <div mat-subheader>{{ group.key }}</div>
+            <mat-divider></mat-divider>
+
+            <!-- Namen unter dem Buchstaben -->
+            <mat-list-item *ngFor="let contact of group.value" (click)="selectContact(contact)" [ngClass]="{ 'open': selectedContact === contact }">
+                
+                    <div class="small-circle"><span>{{ getInitials(contact.name || '') }}</span></div>
+                    <div class="list-contact-details">
+                        <span class="name" matListItemTitle>{{ contact.name }}</span>
+                        <span class="mail-adress" matListItemLine>{{ contact.email }}</span>
+                    </div>
+                
+            </mat-list-item>
+            
+        </ng-container>
+    </mat-list>
+</mat-card>
+
+<div class="contact-main-section">
+    <div class="head-section">
+        <h1 class="headline">Contacts</h1>
+        <div class="parting-line"></div>
+        <h2 class="slogan">Better with a team</h2>
+    </div>
+    <div *ngIf="selectedContact" class="contact-under-section">
+        <div class="contact-detail-container">
+            <div class="name-edit-container">
+                <div class="big-circle"><span>{{ getInitials(selectedContact.name || '') }}</span></div>
+                <div class="name-and-options">
+                    <h2>{{ selectedContact.name }}</h2>
+                    <div class="options">
+                        <div class="option">
+                           <mat-icon>edit</mat-icon><span>Edit</span>
+                        </div>
+                        <div class="option">
+                            <mat-icon>delete</mat-icon><span>Delete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="information-headline">Contact Information</h3>
+        <div class="contact-details-container">
+            <div class="detail-box">
+                <span class="detail-name">Email</span>
+                <span class="mail">{{ selectedContact.email }}</span>
+            </div>
+            <div class="detail-box">
+                <span class="detail-name">Phone</span>
+                <span class="number">Not available</span>
+            </div>
+        </div>
+    </div>
+</div>

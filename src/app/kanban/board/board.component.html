@@ -1,1 +1,110 @@
-<p>board works!</p>
+<section>
+    <div class="head-container">
+      <h1>Board</h1>
+      <div class="head-content">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Find Task">
+          <button matSuffix mat-icon-button>
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+        <button class="add-task-btn">Add task <img src="assets/icons/plus-btn.svg" alt=""></button>
+      </div>
+    </div>
+  
+    <div class="main-content" cdkDropListGroup>
+     <!-- To Do -->
+<div class="kanban-row" cdkDropList [cdkDropListData]="tasks.todo" (cdkDropListDropped)="drop($event)">
+    <div class="row-headline-box"><span>To do</span><img src="assets/icons/plus-board.svg" alt=""></div>
+    
+    <mat-card
+      *ngFor="let task of tasks.todo"
+      cdkDrag
+      appearance="outlined"
+      style="cursor: pointer;">
+      <mat-card-content>
+        <div class="user-category">{{ task.category }}</div>
+        <h2 class="user-title">{{ task.title }}</h2>
+        <h3 class="user-description">{{ task.description }}</h3>
+        <div class="progress-bar">
+          <mat-progress-bar class="example-margin" mode="determinate" value="50"></mat-progress-bar>
+          <span>{{ task.progress }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Empty container  -->
+    <div class="empty-container" *ngIf="tasks.todo.length === 0">No tasks To do</div>
+  </div>
+  
+  
+      <!-- In Progress -->
+      <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.inProgress" (cdkDropListDropped)="drop($event)">
+        <div class="row-headline-box"><span>In progress</span><img src="assets/icons/plus-board.svg" alt=""></div>
+        <mat-card
+          *ngFor="let task of tasks.inProgress"
+          cdkDrag
+          appearance="outlined"
+          style="cursor: pointer;">
+          <mat-card-content>
+            <div class="user-category">{{ task.category }}</div>
+            <h2 class="user-title">{{ task.title }}</h2>
+            <h3 class="user-description">{{ task.description }}</h3>
+            <div class="progress-bar">
+              <mat-progress-bar class="example-margin" mode="determinate" value="75"></mat-progress-bar>
+              <span>{{ task.progress }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+       <!-- Empty container  -->
+    <div class="empty-container" *ngIf="tasks.inProgress.length === 0">No tasks in Progress</div>
+      </div>
+  
+      <!-- Await Feedback -->
+      <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.awaitFeedback" (cdkDropListDropped)="drop($event)">
+        <div class="row-headline-box"><span>Await Feedback</span><img src="assets/icons/plus-board.svg" alt=""></div>
+        <mat-card
+          *ngFor="let task of tasks.awaitFeedback"
+          cdkDrag
+          appearance="outlined"
+          style="cursor: pointer;">
+          <mat-card-content>
+            <div class="user-category">{{ task.category }}</div>
+            <h2 class="user-title">{{ task.title }}</h2>
+            <h3 class="user-description">{{ task.description }}</h3>
+            <div class="progress-bar">
+              <mat-progress-bar class="example-margin" mode="determinate" value="90"></mat-progress-bar>
+              <span>{{ task.progress }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <!-- Empty container  -->
+    <div class="empty-container" *ngIf="tasks.awaitFeedback.length === 0">No tasks for Feedback</div>
+      </div>
+  
+      <!-- Done -->
+      <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.done" (cdkDropListDropped)="drop($event)">
+        <div class="row-headline-box"><span>Done</span><img src="assets/icons/plus-board.svg" alt=""></div>
+        <mat-card
+          *ngFor="let task of tasks.done"
+          cdkDrag
+          appearance="outlined"
+          style="cursor: pointer;">
+          <mat-card-content>
+            <div class="user-category">{{ task.category }}</div>
+            <h2 class="user-title">{{ task.title }}</h2>
+            <h3 class="user-description">{{ task.description }}</h3>
+            <div class="progress-bar">
+              <mat-progress-bar class="example-margin" mode="determinate" value="100"></mat-progress-bar>
+              <span>{{ task.progress }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Empty container  -->
+    <div class="empty-container" *ngIf="tasks.done.length === 0">No tasks Done</div>
+      </div>
+    </div>
+  </section>
+  

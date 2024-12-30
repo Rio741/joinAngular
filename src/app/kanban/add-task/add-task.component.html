@@ -7,17 +7,17 @@
             <div class="input-section-left">
 
                 <mat-label>Title<span class="star">*</span></mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <input matInput placeholder="Enter a title">
                 </mat-form-field>
 
                 <mat-label>Description</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <textarea matInput placeholder="Enter a Description"></textarea>
                 </mat-form-field>
 
                 <mat-label>Title</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <mat-select placeholder="Select contacts to assign" [(value)]="selectedShoes" multiple>
                         <mat-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
                             {{ shoe }}
@@ -36,21 +36,21 @@
             <div class="input-section-right">
 
                 <mat-label>Due date<span class="star">*</span></mat-label>
-                <mat-form-field class="example-full-width" appearance="outline">
+                <mat-form-field class="example-full-width">
                     <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" placeholder="dd/mm/yyyy">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
+                </mat-form-field>
 
-                <mat-label>Priority</mat-label>
-                <mat-button-toggle-group [(ngModel)]="fontStyle" aria-label="Font Style" name="Priority">
+                <mat-label>Prio</mat-label>
+                <mat-button-toggle-group [(ngModel)]="fontStyle" aria-label="Font Style" name="Priority" style="margin-bottom: 20px;">
                     <mat-button-toggle value="bold">Urgent</mat-button-toggle>
                     <mat-button-toggle value="italic">Medium</mat-button-toggle>
                     <mat-button-toggle value="underline">Low</mat-button-toggle>
                 </mat-button-toggle-group>
 
                 <mat-label>Category<span class="star">*</span></mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <mat-select>
                         <mat-option value="one">Technical Task</mat-option>
                         <mat-option value="two">User Story</mat-option>
@@ -58,7 +58,7 @@
                 </mat-form-field>
 
                 <mat-label>Clearable input</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <input matInput type="text" [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
                     <button matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
                         <mat-icon>close</mat-icon>
@@ -74,13 +74,13 @@
             <div><span class="star">*</span><span>This field is required</span></div>
             <div>
                 <div class="button-group">
-                    <button class="clear-btn" mat-flat-button>
-                      Clear
+                    <button class="clear-btn">
+                        Clear <mat-icon>clear</mat-icon>
                     </button>
                     <button class="create-btn" mat-stroked-button>
-                      Create Task
+                        Create Task <img src="assets/icons/check-btn.svg" alt="">
                     </button>
-                  </div>
+                </div>
             </div>
         </div>
     </form>
