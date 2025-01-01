@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +26,13 @@ import { TaskService } from '../../services/task.service';
 
 export class AddTaskComponent {
   task: Task;
+  isInputFocused: boolean = false;
+  contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
+  selectedContacts: string[] = [];
+  newSubtask: string = '';
+  newSubtasks: string[] = [];
+  editingIndex: number | null = null;
+
   constructor(private taskService: TaskService) {
     this.task = new Task(
       '',
@@ -37,10 +44,6 @@ export class AddTaskComponent {
       []
     );
   }
-
-  contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
-  selectedContacts: string[] = [];
-
 
   myFilter = (d: Date | null): boolean => {
     const today = new Date();
@@ -59,6 +62,7 @@ export class AddTaskComponent {
   }
 
   onSubmit(form: any) {
+    this.task.subtask = [...this.newSubtasks];
     console.log(this.task)
     this.formattingDate();
 
@@ -86,6 +90,44 @@ export class AddTaskComponent {
       []
     );
   }
+
+  onInputFocus() {
+    this.isInputFocused = true;
+  }
+
+  onInputBlur() {
+    this.isInputFocused = false;
+  }
+
+  addSubtask() {
+    if (this.newSubtask.trim() !== '') {
+      this.newSubtasks.push(this.newSubtask.trim());
+      this.newSubtask = '';
+    }
+  }
+
+  clearInputField() {
+    console.log("Clear Button Clicked");
+    this.newSubtask = '';
+  }
+
+  deleteSubtask(index: number) {
+    this.newSubtasks.splice(index, 1);
+  }
+
+  editSubtask(index: number) {
+    this.newSubtask = this.newSubtasks[index];
+    this.editingIndex = index;
+  }
+
+  updateSubtask() {
+    if (this.editingIndex !== null) {
+      this.newSubtasks[this.editingIndex] = this.newSubtask;
+      this.editingIndex = null;
+      this.newSubtask = '';
+    }
+  }
+
 }
 
 
