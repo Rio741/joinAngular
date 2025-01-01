@@ -1,3 +1,10 @@
+::ng-deep.mat-mdc-text-field-wrapper {
+    background-color: white !important;
+    cursor: pointer;
+    border-radius: 10px !important;
+    border: solid 1px #D1D1D1;
+}
+
 section {
     display: flex;
     flex-direction: column;
@@ -27,14 +34,20 @@ h1 {
 .add-task-btn {
     display: flex;
     align-items: center;
-    background-color: #2A3647 !important;
+    background-color: #2A3647;
     color: white !important;
     font-size: 21px;
     font-weight: 500;
+    border: none;
     border-radius: 8px;
     padding: 16px;
     cursor: pointer;
     gap: 8px;
+
+    &:hover{
+        background-color: #29ABE2;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .mat-mdc-form-field {
@@ -69,18 +82,21 @@ h1 {
 .row-headline-box {
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     padding-bottom: 16px;
+
+    .add-icon {
+
+        &:hover {
+            color: #29ABE2;
+        }
+    }
 
     span {
         font-size: 20px;
         color: #42526E;
         font-weight: 700;
-    }
-
-    img {
-        height: 24px;
-        width: 24px;
     }
 }
 
@@ -186,4 +202,10 @@ h1 {
     font-size: 16px;
     font-weight: 400;
     color: #A8A8A8;
+}
+
+
+::ng-deep.cdk-overlay-pane.mat-mdc-dialog-panel {
+     max-width: var(--mat-dialog-container-max-width, auto) !important;
+     min-width: var(--mat-dialog-container-min-width, auto) !important;
 }

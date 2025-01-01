@@ -1,0 +1,41 @@
+<section>
+    <div class="left-container">
+        <div class="left-content">
+            <img src="assets/img/logo-sidebar.svg" alt="">
+            <h1>Add contact</h1>
+            <h2>Tasks are better with a team!</h2>
+            <div class="line"></div>
+        </div>
+
+    </div>
+    <div class="right-container">
+        <button class="close-btn" mat-icon-button (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+        <div class="big-circle"><img src="assets/icons/add-person.svg" alt="" class="person-icon"></div>
+
+        <div class="form">
+            <mat-form-field>
+                <input type="name" id="name" matInput placeholder="name" />
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input type="email" id="email" matInput placeholder="email" />
+                <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input type="phone" id="phone" matInput placeholder="phone" />
+                <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+        
+        <div class="button-group">
+            <button type="button" class="cancel-btn">
+                Cancel<mat-icon>clear</mat-icon>
+            </button>
+            <button type="submit" class="create-btn" mat-stroked-button>
+                Create contact <img src="assets/icons/check-btn.svg" alt="">
+            </button>
+        </div>
+    </div>
+    </div>
+</section>

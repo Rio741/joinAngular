@@ -9,7 +9,7 @@
     <div class="dashboard-content">
         <div class="metrics-container">
             <div class="metrics-double-box">
-                <div class="box">
+                <div class="box" [routerLink]="'/kanban/board'">
                     <div class="circle">
                         <img src="assets/icons/todo-1.svg" alt="">
                     </div>
@@ -18,7 +18,7 @@
                         <span class="kind">To-do</span>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box" [routerLink]="'/kanban/board'">
                     <div class="circle">
                         <img src="assets/icons/done-1.svg" alt="">
                     </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="metrics-long-box">
+            <div class="metrics-long-box" [routerLink]="'/kanban/board'">
                 <div class="img-box">
                     <img src="assets/icons/urgent.svg" alt="">
                     <div class="box-description">
@@ -45,19 +45,19 @@
             </div>
 
             <div class="metrics-triple-box">
-                <div class="box">
+                <div class="box" [routerLink]="'/kanban/board'">
                     <div class="box-description">
                         <span class="count">5</span>
                         <span class="kind">Tasks in <br> Board</span>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box" [routerLink]="'/kanban/board'">
                     <div class="box-description">
                         <span class="count">2</span>
                         <span class="kind">Tasks in <br> Progress</span>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box" [routerLink]="'/kanban/board'">
                     <div class="box-description">
                         <span class="count">2</span>
                         <span class="kind">Awaiting <br>Feedback</span>

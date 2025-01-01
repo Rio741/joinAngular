@@ -13,8 +13,6 @@
     padding-top: 0;
 }
 
-
-
 .mdc-list-item {
     &:not(.open):hover {
         background-color: #e4e7ea;
@@ -35,10 +33,6 @@
         border: solid 2px white;
     }
 }
-
-
-
-
 
 .list-contact-details {
     display: flex;
@@ -66,11 +60,17 @@
     font-size: 21px;
     color: white;
     background-color: #2A3647;
+    border: none;
     border-radius: 10px;
     width: fit-content;
     padding: 12px 48px;
     gap: 12px;
     cursor: pointer;
+
+    &:hover {
+        background-color: #29ABE2;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .mail-adress {

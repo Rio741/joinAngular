@@ -6,7 +6,7 @@ section {
 
 .headline {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
     gap: 30px;
     padding-bottom: 46px;
 
@@ -50,6 +50,7 @@ section {
 ::ng-deep.mat-mdc-text-field-wrapper {
     background-color: white !important;
     cursor: pointer;
+    // height: 48px !important;
     border-radius: 10px !important;
     border: solid 1px #D1D1D1;
 }

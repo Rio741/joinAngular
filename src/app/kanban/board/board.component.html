@@ -2,22 +2,24 @@
   <div class="head-container">
     <h1>Board</h1>
     <div class="head-content">
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <input matInput placeholder="Find Task">
         <button matSuffix mat-icon-button>
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>
-      <button class="add-task-btn">Add task <img src="assets/icons/plus-btn.svg" alt=""></button>
+      <button class="add-task-btn" (click)="openAddTaskDialog()">Add task <img src="assets/icons/plus-btn.svg"
+          alt=""></button>
     </div>
   </div>
 
   <div class="main-content" cdkDropListGroup>
     <!-- To Do -->
     <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.todo" (cdkDropListDropped)="drop($event)">
-      <div class="row-headline-box"><span>To do</span><img src="assets/icons/plus-board.svg" alt=""></div>
+      <div class="row-headline-box"><span>To do</span><button mat-icon-button class="add-icon"
+          (click)="openAddTaskDialog()"><mat-icon>add_box</mat-icon></button></div>
 
-      <mat-card *ngFor="let task of tasks.todo" cdkDrag appearance="outlined" style="cursor: pointer;">
+      <mat-card *ngFor="let task of tasks.todo" cdkDrag appearance="outlined" (click)="openTaskDialog()" style="cursor: pointer;">
         <mat-card-content>
           <div [ngStyle]="{
           'background-color': task.category === 'userStory' ? '#0038FF' : '#1FD7C1'
@@ -46,8 +48,9 @@
 
     <!-- In Progress -->
     <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.inProgress" (cdkDropListDropped)="drop($event)">
-      <div class="row-headline-box"><span>In progress</span><img src="assets/icons/plus-board.svg" alt=""></div>
-      <mat-card *ngFor="let task of tasks.inProgress" cdkDrag appearance="outlined" style="cursor: pointer;">
+      <div class="row-headline-box"><span>In progress</span><button mat-icon-button class="add-icon"
+          (click)="openAddTaskDialog()"><mat-icon>add_box</mat-icon></button></div>
+      <mat-card *ngFor="let task of tasks.inProgress" cdkDrag appearance="outlined" (click)="openTaskDialog()" style="cursor: pointer;">
         <mat-card-content>
           <div [ngStyle]="{
           'background-color': task.category === 'userStory' ? '#0038FF' : '#1FD7C1'
@@ -75,8 +78,9 @@
 
     <!-- Await Feedback -->
     <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.awaitFeedback" (cdkDropListDropped)="drop($event)">
-      <div class="row-headline-box"><span>Await Feedback</span><img src="assets/icons/plus-board.svg" alt=""></div>
-      <mat-card *ngFor="let task of tasks.awaitFeedback" cdkDrag appearance="outlined" style="cursor: pointer;">
+      <div class="row-headline-box"><span>Await Feedback</span><button mat-icon-button class="add-icon"
+          (click)="openAddTaskDialog()"><mat-icon>add_box</mat-icon></button></div>
+      <mat-card *ngFor="let task of tasks.awaitFeedback" cdkDrag appearance="outlined" (click)="openTaskDialog()" style="cursor: pointer;">
         <mat-card-content>
           <div [ngStyle]="{
           'background-color': task.category === 'userStory' ? '#0038FF' : '#1FD7C1'
@@ -103,8 +107,9 @@
 
     <!-- Done -->
     <div class="kanban-row" cdkDropList [cdkDropListData]="tasks.done" (cdkDropListDropped)="drop($event)">
-      <div class="row-headline-box"><span>Done</span><img src="assets/icons/plus-board.svg" alt=""></div>
-      <mat-card *ngFor="let task of tasks.done" cdkDrag appearance="outlined" style="cursor: pointer;">
+      <div class="row-headline-box"><span>Done</span><button mat-icon-button class="add-icon"
+          (click)="openAddTaskDialog()"><mat-icon>add_box</mat-icon></button></div>
+      <mat-card *ngFor="let task of tasks.done" cdkDrag appearance="outlined" (click)="openTaskDialog()" style="cursor: pointer;">
         <mat-card-content>
           <div [ngStyle]="{
           'background-color': task.category === 'userStory' ? '#0038FF' : '#1FD7C1'

@@ -12,13 +12,16 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 import { NgForOf, NgIf, NgStyle } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AddTaskDialogComponent } from '../../dialogs/add-task-dialog/add-task-dialog.component';
+import { TaskDialogComponent } from '../../dialogs/task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-board',
   providers: [TaskService],
   imports: [NgForOf, NgIf, FormsModule, MatFormFieldModule, MatInputModule,
             MatIconModule, MatButtonModule, MatCardModule, MatRadioModule,
-            MatSliderModule, MatProgressBarModule, DragDropModule, NgStyle],
+            MatSliderModule, MatProgressBarModule, DragDropModule, NgStyle, MatDialogModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -35,11 +38,37 @@ export class BoardComponent implements OnInit {
     done: [] as Task[]           // Leeres Array für die Done-Spalte
   };
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     // Tasks von der API abrufen, wenn die Komponente geladen wird
     this.loadTasks();
+  }
+
+  openAddTaskDialog() {
+    const dialogRef = this.dialog.open(AddTaskDialogComponent, {
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog geschlossen mit Ergebnis:', result);
+      } else {
+        console.log('Dialog geschlossen ohne Ergebnis.');
+      }
+    });
+  }
+
+  openTaskDialog() {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog geschlossen mit Ergebnis:', result);
+      } else {
+        console.log('Dialog geschlossen ohne Ergebnis.');
+      }
+    });
   }
 
   loadTasks(): void {

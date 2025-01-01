@@ -8,7 +8,7 @@
   <div class="sucessfull-btn">
     <button>You signd up sucessfully</button>
   </div>
-  <mat-card class="signup-container" appearance="outlined">
+  <mat-card class="signup-container">
     <mat-icon [routerLink]="'/'" class="arrow-back" matSuffix>arrow_back</mat-icon>
     <mat-card-title>
       <h1 class="title">Sign up</h1>
@@ -19,7 +19,7 @@
       <div class="input-container">
 
         <!-- Name Field -->
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width">
           <!-- <mat-label>Name</mat-label> -->
           <input type="name" id="name" placeholder="Name" matInput [formControl]="nameFormControl" />
           <mat-icon matSuffix>person</mat-icon>
@@ -32,7 +32,7 @@
         </mat-form-field>
 
         <!-- Email Field -->
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width">
           <input type="email" id="email" placeholder="Email" matInput [formControl]="emailFormControl" />
           <mat-icon matSuffix>mail</mat-icon>
           <mat-error *ngIf="emailFormControl.hasError('required')">
@@ -44,7 +44,7 @@
         </mat-form-field>
 
         <!-- Password Field -->
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width">
           <input type="password" id="password" placeholder="Password" matInput [formControl]="passwordFormControl" />
           <mat-icon matSuffix>lock</mat-icon>
           <mat-error *ngIf="passwordFormControl.hasError('required')">
@@ -56,7 +56,7 @@
         </mat-form-field>
 
         <!-- Confirm Password Field -->
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width" >
           <input type="password" id="confirm-password" placeholder="Confirm Password" matInput
             [formControl]="confirmPasswordFormControl" />
           <mat-icon matSuffix>lock</mat-icon>

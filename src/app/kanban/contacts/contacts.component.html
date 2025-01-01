@@ -1,6 +1,6 @@
 <mat-card>
     <div class="new-contact-container">
-        <button class="new-contact-btn">Add new contact<mat-icon>person_add</mat-icon></button>
+        <button class="new-contact-btn" (click)="openAddContactDialog()">Add new contact<mat-icon>person_add</mat-icon></button>
     </div>
     <mat-list>
         <ng-container *ngFor="let group of groupedContacts | keyvalue">
@@ -36,7 +36,7 @@
                 <div class="name-and-options">
                     <h2>{{ selectedContact.name }}</h2>
                     <div class="options">
-                        <div class="option">
+                        <div class="option" (click)="openEditContactDialog()">
                            <mat-icon>edit</mat-icon><span>Edit</span>
                         </div>
                         <div class="option">
