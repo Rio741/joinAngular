@@ -92,7 +92,7 @@ h1 {
 
 // --------------------
 
-.user-category{
+.user-category {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,30 +101,80 @@ h1 {
     border-radius: 8px;
     width: fit-content;
     padding: 4px 16px;
+    margin-bottom: 24px;
 }
 
-.user-title{
-font-weight: 700;
-font-size: 16px;
-color: #2A3647;
+.user-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #2A3647;
+    margin-block-start: 0;
+    margin-block-end: 8px;
 }
 
-.user-description{
+.user-description {
     font-weight: 400;
     font-size: 16px;
     color: #A8A8A8;
+    margin-block-start: 0;
+    margin-block-end: 18px;
 }
 
-.progress-bar{
+.progress-bar {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-story {
+    background-color: blue;
+    color: white;
+}
+
+.technical-task {
+    background-color: green;
+    color: white;
+}
+
+.card-bottom-container {
+    display: flex;
+    align-items: center;
+}
+
+.circle-container {
+    display: flex;
+    width: 100%;
+    margin-left: 12px;
+}
+
+.small-circle {
+    width: 32px;
+    height: 32px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 1px solid white;
+    margin-left: -12px;
+
+    span {
+        font-size: 12px;
+        font-weight: 400;
+        color: white;
+        text-transform: uppercase;
+    }
 }
 
 
 // ------------
 
-.empty-container{
+.empty-container {
     display: flex;
     justify-content: center;
     align-items: center;

@@ -13,15 +13,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
-import { HttpClientModule } from '@angular/common/http';
-import { log } from 'console';
 
 @Component({
   selector: 'app-add-task',
   providers: [provideNativeDateAdapter(), TaskService],
   imports: [MatSelectModule, MatButtonModule, MatIconModule, MatInputModule,
     MatFormFieldModule, MatListModule, CommonModule, FormsModule, MatSelectModule,
-    MatCheckboxModule, MatButtonToggleModule, ReactiveFormsModule, MatDatepickerModule, HttpClientModule],
+    MatCheckboxModule, MatButtonToggleModule, ReactiveFormsModule, MatDatepickerModule],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
 })
@@ -40,7 +38,7 @@ export class AddTaskComponent {
     );
   }
 
-  contacts: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+  contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
   selectedContacts: string[] = [];
 
 
