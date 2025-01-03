@@ -5,9 +5,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -18,10 +19,12 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class SignUpComponent {
+  constructor(private authService: AuthService, private router: Router) {}
+
   isChecked = false;
   signupForm = new FormGroup(
     {
-      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      username: new FormControl('', [Validators.required, Validators.minLength(3),this.nameValidator]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confirmPassword: new FormControl('', Validators.required),
@@ -35,8 +38,16 @@ export class SignUpComponent {
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
+   // Benutzerdefinierte Validierung für den Namen
+   nameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    // Überprüfen, ob der Name aus mindestens zwei Wörtern besteht
+    const namePattern = /^[a-zA-Z]+(\s[a-zA-Z]+)+$/;
+    return namePattern.test(value) ? null : { invalidName: true };
+  }
+
   get nameFormControl() {
-    return this.signupForm.get('name') as FormControl;
+    return this.signupForm.get('username') as FormControl;
   }
 
   get emailFormControl() {
@@ -58,19 +69,47 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      const { name, email, password } = this.signupForm.value;
-      console.log('Signup data:', { name, email, password });
+      const { username, email, password, confirmPassword } = this.signupForm.value;
+      console.log('Signup data:', { username, email, password, confirmPassword });
       // Hier Registrierungslösung einfügen
     } else {
       console.log('Form is invalid');
     }
   }
 
-  onRegister() {
-    console.log('Redirect to registration page');
+  covertUsername() {
+    let username = this.signupForm.get('username')?.value as string;
+    const result = username.replace(/\s+/g, '_');
+    return result;
   }
-
-  onForgotPassword() {
-    console.log('Execute forgot password logic');
+  
+  onRegister() {
+    if (this.signupForm.valid && this.isChecked) {
+      const username = this.covertUsername();
+      const email = this.signupForm.get('email')?.value as string;
+      const password = this.signupForm.get('password')?.value as string;
+      const confirmPassword = this.signupForm.get('confirmPassword')?.value as string;
+      
+      // AuthService für Registrierung aufrufen
+      this.authService.register(username, email, password, confirmPassword).subscribe(
+        (response) => {
+          console.log('Registrierung erfolgreich', response);
+          const userData = {
+            token: response.token,
+            username: response.username,
+            email: response.email,
+          };
+          sessionStorage.setItem('user_data', JSON.stringify(userData));
+          this.authService.setToken(response.token);
+          this.router.navigate(['/kanban/summary']);
+        },
+        (error) => {
+          console.error('Fehler bei der Registrierung', error);
+          alert('Die Registrierung ist fehlgeschlagen. Bitte versuchen Sie es später erneut.');
+        }
+      );
+    } else {
+      alert('Bitte akzeptieren Sie die Datenschutzrichtlinie und stellen Sie sicher, dass alle Felder korrekt ausgefüllt sind.');
+    }
   }
 }

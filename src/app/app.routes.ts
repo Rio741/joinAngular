@@ -12,6 +12,7 @@ import { HelpPageComponent } from './legal-pages/help-page/help-page.component';
 
 export const routes: Routes = [
     { path: '', component: LogInComponent },
+    { path: 'login', component: LogInComponent },
     { path: 'sign-up', component: SignUpComponent },
     { path: 'privacy-policy', component: PrivacyPolicyComponent },
     { path: 'legal-notice', component: LegalNoticeComponent },

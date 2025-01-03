@@ -21,7 +21,7 @@
         <!-- Name Field -->
         <mat-form-field class="example-full-width">
           <!-- <mat-label>Name</mat-label> -->
-          <input type="name" id="name" placeholder="Name" matInput [formControl]="nameFormControl" />
+          <input type="name" id="username" placeholder="Name" matInput [formControl]="nameFormControl" />
           <mat-icon matSuffix>person</mat-icon>
           <mat-error *ngIf="nameFormControl.hasError('required')">
             Name is <strong>required</strong>
@@ -72,10 +72,11 @@
 
       <!-- Button -->
 
-      <mat-checkbox [(ngModel)]="isChecked">I accept the <span class="checkbox-link">Privacy
-          Policy</span></mat-checkbox>
+      <mat-checkbox required [(ngModel)]="isChecked" name="isChecked" #isCheckedControl="ngModel">
+        I accept the <span class="checkbox-link">Privacy Policy</span>
+      </mat-checkbox>
 
-      <button class="signup-btn" mat-flat-button [disabled]="signupForm.invalid">
+      <button (click)="onRegister()" class="signup-btn" mat-flat-button [disabled]="signupForm.invalid || !isCheckedControl.valid">
         Sign up
       </button>
 

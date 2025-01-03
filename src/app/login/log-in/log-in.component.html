@@ -42,7 +42,7 @@
   
         <!-- Buttons -->
         <div class="button-group">
-          <button class="login-btn" mat-flat-button [disabled]="loginForm.invalid">
+          <button class="login-btn" mat-flat-button [disabled]="loginForm.invalid" (click)="onSubmit()">
             Login
           </button>
           <button class="guest-btn" mat-stroked-button [routerLink]="'/kanban/summary'">
