@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './summary.component.html',
   styleUrl: './summary.component.scss'
 })
+
 export class SummaryComponent implements OnInit {
 
   userData: any;
@@ -14,11 +15,11 @@ export class SummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-    this.covertUsername();
+    this.convertUsername();
   }
 
-  covertUsername() {
-    let username = this.userData.username;
+  convertUsername(): void {
+    const username = this.userData.username;
     this.convertedName = username.replace(/_/g, ' ');
   }
 
@@ -27,12 +28,6 @@ export class SummaryComponent implements OnInit {
 
     if (storedUserData) {
       this.userData = JSON.parse(storedUserData);
-      console.log('Benutzerdaten:', this.userData);
-    } else {
-      console.log('Keine Benutzerdaten im localStorage gefunden');
     }
   }
-
-  
-
 }
