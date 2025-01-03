@@ -6,6 +6,7 @@ export class Task {
     public dueDate: Date | null,
     public priority: 'urgent' | 'medium' | 'low',
     public category: string,
-    public subtask: string[]
+    public subtasks: { title: string, status: 'in-progress' | 'completed' }[],
+    public status: 'todo' | 'inProgress' | 'awaitFeedback' | 'done', 
   ) {}
 }

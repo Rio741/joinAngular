@@ -75,6 +75,55 @@ mat-label {
     padding-bottom: 8px;
 }
 
+.subtask-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 4px;
+
+    .subtask {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 0 20px;
+        border-radius: 10px;
+        height: 28px;
+
+        // Icons ausblenden, wenn nicht gehobert wird
+        .subtask-icons {
+            display: none;
+            // Hier kannst du noch weitere Styles für die Icons anpassen
+        }
+
+        &:hover {
+            background-color: #D1D1D1;
+
+            // Icons sichtbar machen, wenn über die Subtask gehobert wird
+            .subtask-icons {
+                display: flex;
+
+
+
+            }
+        }
+    }
+}
+
+.subtask-icon-edit {
+
+    &:hover {
+        color: #29ABE2;
+    }
+}
+
+.subtask-icon-delete {
+
+    &:hover {
+        color: #29ABE2;
+    }
+}
+
 .bottom-field {
     display: flex;
     justify-content: space-between;

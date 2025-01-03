@@ -29,9 +29,13 @@ export class AddTaskComponent {
   isInputFocused: boolean = false;
   contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
   selectedContacts: string[] = [];
-  newSubtask: string = '';
+   newSubtask: string = '';
   newSubtasks: string[] = [];
+  AnewSubtasks: { title: string, status: 'in-progress' | 'completed' }[] = []; 
   editingIndex: number | null = null;
+  
+ 
+  
 
   constructor(private taskService: TaskService) {
     this.task = new Task(
@@ -41,7 +45,8 @@ export class AddTaskComponent {
       null,
       'medium',
       '',
-      []
+      [],
+      'todo'
     );
   }
 
@@ -62,7 +67,14 @@ export class AddTaskComponent {
   }
 
   onSubmit(form: any) {
-    this.task.subtask = [...this.newSubtasks];
+
+    this.AnewSubtasks = this.newSubtasks.map((title) => ({
+      title: title.trim(),
+      status: 'in-progress',
+    }));
+    this.task.subtasks = [...this.AnewSubtasks];
+
+
     console.log(this.task)
     this.formattingDate();
 
@@ -87,22 +99,32 @@ export class AddTaskComponent {
       null,
       'medium',
       '',
-      []
+      [],
+      'todo'
     );
   }
 
-  onInputFocus() {
+  onInputFocus(): void {
     this.isInputFocused = true;
+    console.log('Input focused:', this.isInputFocused);
   }
-
-  onInputBlur() {
+  
+  onInputBlur(): void {
     this.isInputFocused = false;
+    console.log('Input blurred:', this.isInputFocused);
   }
+  
 
   addSubtask() {
+    console.log('Subtask hinzufügen gestartet');
+    // Füge hier den aktuellen Status und alle relevanten Daten ein:
+    console.log('Aktuelle Subtasks:', this.newSubtasks);
+    // Deine Logik zum Hinzufügen des Subtasks
     if (this.newSubtask.trim() !== '') {
       this.newSubtasks.push(this.newSubtask.trim());
       this.newSubtask = '';
+      
+      
     }
   }
 

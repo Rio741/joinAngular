@@ -26,6 +26,15 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AddTaskDialogComponent {
   task: Task;
+  isInputFocused: boolean = false;
+  contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
+  selectedContacts: string[] = [];
+   newSubtask: string = '';
+  newSubtasks: string[] = [];
+  AnewSubtasks: { title: string, status: 'in-progress' | 'completed' }[] = []; 
+  editingIndex: number | null = null;
+  
+ 
   constructor(private taskService: TaskService, public dialogRef: MatDialogRef<AddTaskDialogComponent>) {
     this.task = new Task(
       '',
@@ -34,13 +43,10 @@ export class AddTaskDialogComponent {
       null,
       'medium',
       '',
-      []
+      [],
+      'todo'
     );
   }
-
-  contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
-  selectedContacts: string[] = [];
-
 
   myFilter = (d: Date | null): boolean => {
     const today = new Date();
@@ -59,6 +65,14 @@ export class AddTaskDialogComponent {
   }
 
   onSubmit(form: any) {
+
+    this.AnewSubtasks = this.newSubtasks.map((title) => ({
+      title: title.trim(),
+      status: 'in-progress',
+    }));
+    this.task.subtasks = [...this.AnewSubtasks];
+
+
     console.log(this.task)
     this.formattingDate();
 
@@ -83,14 +97,51 @@ export class AddTaskDialogComponent {
       null,
       'medium',
       '',
-      []
+      [],
+      'todo'
     );
+  }
+
+  onInputFocus() {
+    this.isInputFocused = true;
+  }
+
+  onInputBlur() {
+    this.isInputFocused = false;
+  }
+
+  addSubtask() {
+    if (this.newSubtask.trim() !== '') {
+      this.newSubtasks.push(this.newSubtask.trim());
+      this.newSubtask = '';
+    }
+  }
+
+  clearInputField() {
+    console.log("Clear Button Clicked");
+    this.newSubtask = '';
+  }
+
+  deleteSubtask(index: number) {
+    this.newSubtasks.splice(index, 1);
+  }
+
+  editSubtask(index: number) {
+    this.newSubtask = this.newSubtasks[index];
+    this.editingIndex = index;
+  }
+
+  updateSubtask() {
+    if (this.editingIndex !== null) {
+      this.newSubtasks[this.editingIndex] = this.newSubtask;
+      this.editingIndex = null;
+      this.newSubtask = '';
+    }
   }
 
   closeDialog(): void {
     this.dialogRef.close();
   }
 }
-
 
 

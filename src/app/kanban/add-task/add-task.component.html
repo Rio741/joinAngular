@@ -63,17 +63,17 @@
                         [(ngModel)]="newSubtask" (focus)="onInputFocus()" (blur)="onInputBlur()">
                     <!-- Button, um neuen Subtask hinzuzufügen -->
                     <button type="button" matSuffix mat-icon-button *ngIf="!isInputFocused && editingIndex === null"
-                        (click)="addSubtask()">
+                        (mousedown)="addSubtask()">
                         <mat-icon>add</mat-icon>
                     </button>
                     <!-- Button, um Eingabefeld zu leeren -->
                     <button type="button" matSuffix mat-icon-button *ngIf="isInputFocused && editingIndex === null"
-                        (click)="clearInputField()">
+                        (mousedown)="clearInputField()">
                         <mat-icon>clear</mat-icon>
                     </button>
                     <!-- Button, um neuen Subtask hinzuzufügen -->
                     <button type="button" matSuffix mat-icon-button *ngIf="isInputFocused && editingIndex === null"
-                        (click)="addSubtask()">
+                        (mousedown)="addSubtask()">
                         <mat-icon>done</mat-icon>
                     </button>
                     <!-- Button, um bearbeiteten Subtask zu speichern -->

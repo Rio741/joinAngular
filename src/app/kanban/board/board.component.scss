@@ -5,6 +5,11 @@
     border: solid 1px #D1D1D1;
 }
 
+::ng-deep.cdk-overlay-pane.mat-mdc-dialog-panel {
+    max-width: var(--mat-dialog-container-max-width, auto) !important;
+    min-width: var(--mat-dialog-container-min-width, auto) !important;
+}
+
 section {
     display: flex;
     flex-direction: column;
@@ -44,7 +49,7 @@ h1 {
     cursor: pointer;
     gap: 8px;
 
-    &:hover{
+    &:hover {
         background-color: #29ABE2;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
     }
@@ -134,6 +139,7 @@ h1 {
     color: #A8A8A8;
     margin-block-start: 0;
     margin-block-end: 18px;
+    line-break: anywhere;
 }
 
 .progress-bar {
@@ -141,6 +147,13 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+    gap: 8px;
+}
+
+.subtask-conunt {
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 400;
 }
 
 .user-story {
@@ -152,6 +165,8 @@ h1 {
     background-color: green;
     color: white;
 }
+
+
 
 .card-bottom-container {
     display: flex;
@@ -205,7 +220,3 @@ h1 {
 }
 
 
-::ng-deep.cdk-overlay-pane.mat-mdc-dialog-panel {
-     max-width: var(--mat-dialog-container-max-width, auto) !important;
-     min-width: var(--mat-dialog-container-min-width, auto) !important;
-}

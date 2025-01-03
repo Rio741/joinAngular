@@ -1,7 +1,6 @@
 <section>
     <div class="headline">
-        <h1>Add Task</h1>
-        <button mat-icon-button (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+        <h1>Add Task</h1> <button class="close-btn" mat-icon-button (click)="closeDialog()"><mat-icon>close</mat-icon></button>
     </div>
 
     <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)">
@@ -60,12 +59,41 @@
 
                 <mat-label>Subtasks</mat-label>
                 <mat-form-field>
-                    <input matInput placeholder="Add new subtask" [(ngModel)]="task.subtask" name="subtask"
-                        [ngModelOptions]="{standalone: true}">
-                    <button matSuffix mat-icon-button >
-                        <mat-icon>close</mat-icon>
+                    <input [ngModelOptions]="{standalone: true}" #input matInput placeholder="Add new subtask"
+                        [(ngModel)]="newSubtask" (focus)="onInputFocus()" (blur)="onInputBlur()">
+                    <!-- Button, um neuen Subtask hinzuzufügen -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="!isInputFocused && editingIndex === null"
+                        (mousedown)="addSubtask()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <!-- Button, um Eingabefeld zu leeren -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="isInputFocused && editingIndex === null"
+                        (mousedown)="clearInputField()">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                    <!-- Button, um neuen Subtask hinzuzufügen -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="isInputFocused && editingIndex === null"
+                        (mousedown)="addSubtask()">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                    <!-- Button, um bearbeiteten Subtask zu speichern -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="editingIndex !== null" (click)="updateSubtask()">
+                        <mat-icon>done</mat-icon>
                     </button>
                 </mat-form-field>
+
+                <!-- Subtask-Liste -->
+                <div class="subtask-list">
+                    <div *ngFor="let subtask of newSubtasks; let i = index" class="subtask">
+                        <span>• {{ subtask }}</span>
+                        <div class="subtask-icons">
+                            <mat-icon class="subtask-icon-edit" (click)="editSubtask(i)">edit</mat-icon>
+                            <mat-icon class="subtask-icon-delete" (click)="deleteSubtask(i)">delete</mat-icon>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 

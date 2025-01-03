@@ -23,16 +23,24 @@ export class TaskService {
 
   // Abrufen einer einzelnen Aufgabe nach ID
   getTaskById(id: string): Observable<Task> {
-    return this.http.get<Task>(`${this.apiUrl}/${id}`);
+    return this.http.get<Task>(`${this.apiUrl}${id}/`);
   }
 
-  // Aktualisieren einer Aufgabe
-  updateTask(id: string, task: Task): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${id}`, task);
+  updateTaskStatus(id: string, status: string): Observable<Task> {
+    const updatedTask = { status: status };  // Nur den Status übergeben
+    return this.http.patch<Task>(`${this.apiUrl}${id}/`, updatedTask);  // PATCH-Methode
   }
+  
+  updateSubtaskStatus(subtaskId: number, status: string): Observable<any> {
+    return this.http.patch<any>(`http://127.0.0.1:8000/subtasks/${subtaskId}/update_status/`, { status });
+}
+
 
   // Löschen einer Aufgabe
-  deleteTask(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteTask(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
+
+ 
+  
 }

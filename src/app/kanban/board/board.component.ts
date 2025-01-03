@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,8 +20,8 @@ import { TaskDialogComponent } from '../../dialogs/task-dialog/task-dialog.compo
   selector: 'app-board',
   providers: [TaskService],
   imports: [NgForOf, NgIf, FormsModule, MatFormFieldModule, MatInputModule,
-            MatIconModule, MatButtonModule, MatCardModule, MatRadioModule,
-            MatSliderModule, MatProgressBarModule, DragDropModule, NgStyle, MatDialogModule],
+    MatIconModule, MatButtonModule, MatCardModule, MatRadioModule,
+    MatSliderModule, MatProgressBarModule, DragDropModule, NgStyle, MatDialogModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -38,12 +38,26 @@ export class BoardComponent implements OnInit {
     done: [] as Task[]           // Leeres Array für die Done-Spalte
   };
 
-  constructor(private taskService: TaskService, private dialog: MatDialog) {}
+
+  constructor(private taskService: TaskService, private dialog: MatDialog,
+    private cdRef: ChangeDetectorRef, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     // Tasks von der API abrufen, wenn die Komponente geladen wird
     this.loadTasks();
   }
+
+
+  inProgressSubtasksCount(subtasks: any[]): number {
+    return subtasks.filter(subtask => subtask.status === 'done').length;
+  }
+
+  calculateProgress(subtasks: any[]): number {
+    const inProgressCount = this.inProgressSubtasksCount(subtasks);
+    const totalSubtasks = subtasks.length;
+    return totalSubtasks > 0 ? (inProgressCount / totalSubtasks) * 100 : 0;
+  }
+
 
   openAddTaskDialog() {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
@@ -58,38 +72,58 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  openTaskDialog() {
+  openTaskDialog(task: any): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
+      data: task
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: number) => {
       if (result) {
-        console.log('Dialog geschlossen mit Ergebnis:', result);
+        // Wenn eine ID zurückgegeben wird, lösche den Task
+        this.deleteTask(result);
       } else {
-        console.log('Dialog geschlossen ohne Ergebnis.');
+        console.log('Dialog wurde ohne Ergebnis geschlossen');
       }
     });
   }
 
+  deleteTask(taskId: number): void {
+    this.taskService.deleteTask(taskId).subscribe({
+      next: () => {
+        console.log('Task erfolgreich gelöscht!');
+      },
+      error: (err) => {
+        console.error('Fehler beim Löschen der Aufgabe:', err);
+        // Fehlerbehandlung
+      }
+    });
+  }
+
+
+
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
-  
-        // Alle Aufgaben in die "todo"-Liste aufnehmen, um sie zu überprüfen
-        this.tasks.todo = tasks;
-  
-        // Optional: Filtere die Aufgaben, nachdem du sie überprüft hast
-        this.tasks.inProgress = tasks.filter(task => task.category === 'In progress');
-        this.tasks.awaitFeedback = tasks.filter(task => task.category === 'Await Feedback');
-        this.tasks.done = tasks.filter(task => task.category === 'Done');
-  
-        
+        console.log('Empfangene Aufgaben:', tasks);
+
+        // Aufgaben basierend auf ihrem Status zuordnen
+        this.tasks.todo = tasks.filter(task => task.status === 'todo');
+        this.tasks.inProgress = tasks.filter(task => task.status === 'inProgress');
+        this.tasks.awaitFeedback = tasks.filter(task => task.status === 'awaitFeedback');
+        this.tasks.done = tasks.filter(task => task.status === 'done');
+
+        console.log('Zuordnung abgeschlossen:');
+        console.log('To-Do:', this.tasks.todo);
+        console.log('In Progress:', this.tasks.inProgress);
+        console.log('Await Feedback:', this.tasks.awaitFeedback);
+        console.log('Done:', this.tasks.done);
       },
       error: (err) => {
         console.error('Fehler beim Laden der Aufgaben:', err);
       }
     });
   }
+
 
   getInitials(contactName: string): string {
     const nameParts = contactName.split(' ');
@@ -99,17 +133,32 @@ export class BoardComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<any[]>): void {
-    // Wenn das Item innerhalb der gleichen Container bewegt wird
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      // Wenn das Item zwischen verschiedenen Containern verschoben wird
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+    const movedTask = event.item.data;
+  
+    // Den Status der Aufgabe basierend auf der Zielspalte aktualisieren
+    if (event.container.id === 'todo') {
+      movedTask.status = 'todo';
+    } else if (event.container.id === 'inProgress') {
+      movedTask.status = 'inProgress';
+    } else if (event.container.id === 'done') {
+      movedTask.status = 'done';
+    } else if (event.container.id === 'awaitFeedback') {
+      movedTask.status = 'awaitFeedback';
     }
+  
+    // Den neuen Status an das Backend senden
+    this.taskService.updateTaskStatus(movedTask.id, movedTask.status).subscribe(
+      (updatedTask) => {
+        this.cdr.detectChanges();
+        console.log('Task Status erfolgreich aktualisiert:', updatedTask);
+      },
+      (error) => {
+        console.error('Fehler beim Aktualisieren des Status:', error);
+      }
+    );
   }
+  
+
+
+  
 }
