@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,13 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'join-frontend';
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    // Überprüft und setzt den Login-Status beim Start der App
+    this.authService.checkLoginStatus();
+  }
 }

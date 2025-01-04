@@ -1,6 +1,6 @@
 <header>
     <span class="headline">Kanban Project Management Tool</span>
-    <div class="button-container">
+    <div class="button-container"  *ngIf="authService.isLoggedIn()">
         <div class="help-container">
             <img src="assets/icons/help.svg" alt="Help" [routerLink]="'/kanban/help-page'">
         </div>

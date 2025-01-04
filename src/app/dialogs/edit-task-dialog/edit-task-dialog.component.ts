@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,18 +13,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-add-task',
+  selector: 'app-edit-task-dialog',
   providers: [provideNativeDateAdapter(), TaskService],
   imports: [MatSelectModule, MatButtonModule, MatIconModule, MatInputModule,
     MatFormFieldModule, MatListModule, CommonModule, FormsModule, MatSelectModule,
     MatCheckboxModule, MatButtonToggleModule, ReactiveFormsModule, MatDatepickerModule],
-  templateUrl: './add-task.component.html',
-  styleUrl: './add-task.component.scss'
+  templateUrl: './edit-task-dialog.component.html',
+  styleUrl: './edit-task-dialog.component.scss'
 })
-
-export class AddTaskComponent {
+export class EditTaskDialogComponent {
   task: Task;
   isInputFocused: boolean = false;
   contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
@@ -35,9 +35,7 @@ export class AddTaskComponent {
   editingIndex: number | null = null;
   
  
-  
-
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, public dialogRef: MatDialogRef<EditTaskDialogComponent>) {
     this.task = new Task(
       '',
       '',
@@ -90,41 +88,18 @@ export class AddTaskComponent {
     }
   }
 
-  clearForm(form: any) {
-    form.resetForm();
-    this.task = new Task(
-      '',
-      '',
-      [],
-      null,
-      'medium',
-      '',
-      [],
-      'todo'
-    );
+  onInputFocus() {
+    this.isInputFocused = true;
   }
 
-  onInputFocus(): void {
-    this.isInputFocused = true;
-    console.log('Input focused:', this.isInputFocused);
-  }
-  
-  onInputBlur(): void {
+  onInputBlur() {
     this.isInputFocused = false;
-    console.log('Input blurred:', this.isInputFocused);
   }
-  
 
   addSubtask() {
-    console.log('Subtask hinzufügen gestartet');
-    // Füge hier den aktuellen Status und alle relevanten Daten ein:
-    console.log('Aktuelle Subtasks:', this.newSubtasks);
-    // Deine Logik zum Hinzufügen des Subtasks
     if (this.newSubtask.trim() !== '') {
       this.newSubtasks.push(this.newSubtask.trim());
       this.newSubtask = '';
-      
-      
     }
   }
 
@@ -150,6 +125,10 @@ export class AddTaskComponent {
     }
   }
 
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
 }
+
 
 

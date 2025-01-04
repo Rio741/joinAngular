@@ -3,8 +3,8 @@
     <div class="card-content">
         <div class="top-container">
             <div [ngStyle]="{
-    'background-color': task.category === 'userStory' ? '#0038FF' : '#1FD7C1'
-  }" class="user-category">{{ task.category }}</div>
+    'background-color': task.category === 'User_Story' ? '#0038FF' : '#1FD7C1'
+  }" class="user-category">{{ formatCategoryName(task.category )}}</div>
             <button class="close-btn" mat-icon-button (click)="closeDialog()"><mat-icon>close</mat-icon></button>
         </div>
         <h2 class="user-title">{{ task.title }}</h2>
@@ -35,7 +35,7 @@
         <div class="button-container">
             <div class="btn1" (click)="deleteTask(task.id)"><mat-icon>delete</mat-icon><span>Delete</span></div>
             <div class="line"></div>
-            <div class="btn2"><mat-icon>edit</mat-icon><span>Edit</span></div>
+            <div class="btn2" (click)="openEditTaskDialog(task)"><mat-icon>edit</mat-icon><span>Edit</span></div>
         </div>
 
     </div>

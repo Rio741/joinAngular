@@ -1,4 +1,4 @@
-<button mat-icon-button class="arrow-back"><mat-icon matSuffix (click)="goBack()">arrow_back</mat-icon></button>
+<button mat-icon-button class="arrow-back" *ngIf="authService.isLoggedIn()"><mat-icon matSuffix (click)="goBack()">arrow_back</mat-icon></button>
 
 <section>
     <h1 class="headline">Legal Notice</h1>

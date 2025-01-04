@@ -3,10 +3,11 @@ import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, MatButtonModule, MatMenuModule, RouterModule,],
+  imports: [RouterModule, MatButtonModule, MatMenuModule, RouterModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
   userInitials: string = '';
   convertedName: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadUserData();

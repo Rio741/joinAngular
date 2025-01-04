@@ -166,7 +166,25 @@ section {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-}
+    position: relative;
+    opacity: 0;
+    transform: translateX(100%); /* Anfangszustand */
+  }
+  
+  .name-container.slide-in {
+    animation: slideInFromRight 1s ease-out forwards;
+  }
+  
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 
 .greeting {
     font-size: 47px;

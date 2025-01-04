@@ -3,7 +3,7 @@
         <img src="assets/img/logo-sidebar.svg" alt="Logo" class="logo">
     </div>
 
-    <div class="page-container">
+    <div class="page-container" *ngIf="authService.isLoggedIn()">
         <div class="page-field" [routerLink]="'/kanban/summary'" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
             <img src="assets/icons/summary.svg" alt=""><span>Summary</span>

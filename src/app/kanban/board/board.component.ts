@@ -47,6 +47,17 @@ export class BoardComponent implements OnInit {
     this.loadTasks();
   }
 
+  formatCategoryName(category: string): string {
+    // Überprüfen, ob die Kategorie "User_Story" ist
+    if (category === 'User_Story') {
+      // Ersetze das "_" durch ein Leerzeichen
+      return category.replace('_', ' ');
+    } else {
+      // Andernfalls einfach den Originalwert zurückgeben
+      return category;
+    }
+  }
+  
 
   inProgressSubtasksCount(subtasks: any[]): number {
     return subtasks.filter(subtask => subtask.status === 'done').length;
@@ -94,34 +105,48 @@ export class BoardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Fehler beim Löschen der Aufgabe:', err);
-        // Fehlerbehandlung
       }
     });
   }
-
-
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
         console.log('Empfangene Aufgaben:', tasks);
 
-        // Aufgaben basierend auf ihrem Status zuordnen
-        this.tasks.todo = tasks.filter(task => task.status === 'todo');
-        this.tasks.inProgress = tasks.filter(task => task.status === 'inProgress');
-        this.tasks.awaitFeedback = tasks.filter(task => task.status === 'awaitFeedback');
-        this.tasks.done = tasks.filter(task => task.status === 'done');
-
-        console.log('Zuordnung abgeschlossen:');
-        console.log('To-Do:', this.tasks.todo);
-        console.log('In Progress:', this.tasks.inProgress);
-        console.log('Await Feedback:', this.tasks.awaitFeedback);
-        console.log('Done:', this.tasks.done);
-      },
-      error: (err) => {
-        console.error('Fehler beim Laden der Aufgaben:', err);
+        this.filterTasksByStatus(tasks);
       }
     });
+  }
+
+  private filterTasksByStatus(tasks: Task[]): void {
+    this.tasks.todo = tasks.filter(task => task.status === 'todo');
+    this.tasks.inProgress = tasks.filter(task => task.status === 'inProgress');
+    this.tasks.awaitFeedback = tasks.filter(task => task.status === 'awaitFeedback');
+    this.tasks.done = tasks.filter(task => task.status === 'done');
+  }
+
+
+  drop(event: CdkDragDrop<any[]>): void {
+    const movedTask = event.item.data;
+
+    if (event.container.id === 'todo') {
+      movedTask.status = 'todo';
+    } else if (event.container.id === 'inProgress') {
+      movedTask.status = 'inProgress';
+    } else if (event.container.id === 'done') {
+      movedTask.status = 'done';
+    } else if (event.container.id === 'awaitFeedback') {
+      movedTask.status = 'awaitFeedback';
+    }
+
+    this.taskService.updateTaskStatus(movedTask.id, movedTask.status).subscribe(
+      (updatedTask) => {
+        console.log('Updated Task:', updatedTask);
+
+        this.loadTasks();
+      }
+    );
   }
 
 
@@ -132,33 +157,5 @@ export class BoardComponent implements OnInit {
     return `${firstInitial}${lastInitial}`;
   }
 
-  drop(event: CdkDragDrop<any[]>): void {
-    const movedTask = event.item.data;
-  
-    // Den Status der Aufgabe basierend auf der Zielspalte aktualisieren
-    if (event.container.id === 'todo') {
-      movedTask.status = 'todo';
-    } else if (event.container.id === 'inProgress') {
-      movedTask.status = 'inProgress';
-    } else if (event.container.id === 'done') {
-      movedTask.status = 'done';
-    } else if (event.container.id === 'awaitFeedback') {
-      movedTask.status = 'awaitFeedback';
-    }
-  
-    // Den neuen Status an das Backend senden
-    this.taskService.updateTaskStatus(movedTask.id, movedTask.status).subscribe(
-      (updatedTask) => {
-        this.cdr.detectChanges();
-        console.log('Task Status erfolgreich aktualisiert:', updatedTask);
-      },
-      (error) => {
-        console.error('Fehler beim Aktualisieren des Status:', error);
-      }
-    );
-  }
-  
 
-
-  
 }

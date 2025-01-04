@@ -58,7 +58,7 @@ export class LogInComponent {
               email: response.email,
             };
             sessionStorage.setItem('user_data', JSON.stringify(userData));
-  
+            this.authService.setLoggedIn(true); 
             // Optional: Token separat speichern, falls benötigt
             this.authService.setToken(response.token);
   

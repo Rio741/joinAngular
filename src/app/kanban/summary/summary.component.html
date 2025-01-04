@@ -14,7 +14,7 @@
                         <img src="assets/icons/todo-1.svg" alt="">
                     </div>
                     <div class="box-description">
-                        <span class="count">1</span>
+                        <span class="count">{{todoTasks}}</span>
                         <span class="kind">To-do</span>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         <img src="assets/icons/done-1.svg" alt="">
                     </div>
                     <div class="box-description">
-                        <span class="count">1</span>
+                        <span class="count">{{doneTasks}}</span>
                         <span class="kind">Done</span>
                     </div>
                 </div>
@@ -33,13 +33,13 @@
                 <div class="img-box">
                     <img src="assets/icons/urgent.svg" alt="">
                     <div class="box-description">
-                        <span class="count">1</span>
+                        <span class="count">{{prioTasks}}</span>
                         <span class="kind">Urgent</span>
                     </div>
                 </div>
                 <div class="line-box"></div>
                 <div class="info-box">
-                    <span class="date">October 16, 2022</span>
+                    <span class="date">{{upcomingDate}}</span>
                     <span class="info">Upcoming deadline</span>
                 </div>
             </div>
@@ -47,19 +47,19 @@
             <div class="metrics-triple-box">
                 <div class="box" [routerLink]="'/kanban/board'">
                     <div class="box-description">
-                        <span class="count">5</span>
+                        <span class="count">{{tasksInBoard}}</span>
                         <span class="kind">Tasks in <br> Board</span>
                     </div>
                 </div>
                 <div class="box" [routerLink]="'/kanban/board'">
                     <div class="box-description">
-                        <span class="count">2</span>
+                        <span class="count">{{inProgressTasks}}</span>
                         <span class="kind">Tasks in <br> Progress</span>
                     </div>
                 </div>
                 <div class="box" [routerLink]="'/kanban/board'">
                     <div class="box-description">
-                        <span class="count">2</span>
+                        <span class="count">{{awaitingFeedbackTasks}}</span>
                         <span class="kind">Awaiting <br>Feedback</span>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="name-container">
-            <span class="greeting">Good Morning,</span>
+            <span class="greeting">{{ greeting }},</span>
             <span class="name">{{convertedName}}</span>
         </div>
     </div>

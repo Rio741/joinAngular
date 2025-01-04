@@ -101,6 +101,7 @@ export class SignUpComponent {
           };
           sessionStorage.setItem('user_data', JSON.stringify(userData));
           this.authService.setToken(response.token);
+          this.authService.setLoggedIn(true);
           this.router.navigate(['/kanban/summary']);
         },
         (error) => {
