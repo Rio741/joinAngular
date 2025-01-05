@@ -1,27 +1,50 @@
-import { NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, Inject, model, OnInit, Output } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
+import { CommonModule, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Component, Inject, model, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardContent } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { EventEmitter } from 'stream';
 import { TaskService } from '../../services/task.service';
 import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
+import { Contact } from '../../models/contact.model';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { ContactService } from '../../services/contact.service';
 
 
 @Component({
   selector: 'app-task-dialog',
-  imports: [NgStyle, NgFor,NgIf, MatCardContent, MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule],
+  providers: [provideNativeDateAdapter(), TaskService],
+  imports: [NgStyle, NgFor, NgIf, MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule,
+    MatLabel, MatFormField, MatDatepickerModule, MatDatepickerToggle, MatButtonToggleModule, MatOptionModule,
+    MatSelect, MatInputModule, MatSelectModule, CommonModule, MatListModule, ReactiveFormsModule
+  ],
   templateUrl: './task-dialog.component.html',
   styleUrl: './task-dialog.component.scss'
 })
 
-export class TaskDialogComponent {
+export class TaskDialogComponent implements OnInit {
+  isInputFocused: boolean = false;
+  inputSubtask: string = '';
+  createdSubtasks: { id: number; title: string; status: 'in-progress' | 'completed' }[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<TaskDialogComponent>, private taskService: TaskService, private dialog: MatDialog) {
+  AnewSubtasks: { title: string, status: 'in-progress' | 'completed' }[] = [];
+  editingIndex: number | null = null;
+
+  contacts: Contact[] = [];
+  selectedContacts: string[] = [];
+
+  isEditMode: boolean = false;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<TaskDialogComponent>, private taskService: TaskService, private dialog: MatDialog, private contactService: ContactService) {
     this.task = data;
+
   }
   readonly checked = model(false);
   task: any;
@@ -30,6 +53,28 @@ export class TaskDialogComponent {
     this.dialogRef.close(id);
   }
 
+  ngOnInit(): void {
+    this.loadContacts();
+    
+    this.loadSubtasks();
+    console.log('ausgewählte subtasks:', this.createdSubtasks);
+  }
+
+  loadSubtasks() {
+    this.createdSubtasks = this.task.subtasks
+  }
+
+
+  loadContacts(): void {
+    this.contactService.getContacts().subscribe(
+      (data) => {
+        this.contacts = data;
+      },
+      (error) => {
+        console.error('Fehler beim Laden der Kontakte', error);
+      }
+    );
+  }
 
   inProgressSubtasksCount(subtasks: any[]): number {
     return subtasks.filter(subtask => subtask.status === 'done').length;
@@ -39,7 +84,7 @@ export class TaskDialogComponent {
     this.dialogRef.close();
   }
 
-  openEditTaskDialog(task: any){
+  openEditTaskDialog(task: any) {
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {
       data: task
     });
@@ -72,40 +117,153 @@ export class TaskDialogComponent {
 
     // Subtask-Status aktualisieren
     this.taskService.updateSubtaskStatus(subtask.id, newStatus).subscribe(
-        (updatedSubtask) => {
-            console.log('Subtask Status erfolgreich aktualisiert:', updatedSubtask);
-            // Subtask lokal aktualisieren
-            subtask.status = updatedSubtask.status;
-        },
-        (error) => {
-            console.error('Fehler beim Aktualisieren des Subtask-Status:', error);
-        }
+      (updatedSubtask) => {
+        console.log('Subtask Status erfolgreich aktualisiert:', updatedSubtask);
+        // Subtask lokal aktualisieren
+        subtask.status = updatedSubtask.status;
+      },
+      (error) => {
+        console.error('Fehler beim Aktualisieren des Subtask-Status:', error);
+      }
     );
-}
-
-getInitials(contact: any): string {
-  let contactName = '';
-
-  if (typeof contact === 'string') {
-    contactName = contact; // Wenn es ein String ist
-  } else if (typeof contact === 'object' && contact.name) {
-    contactName = contact.name; // Wenn es ein Objekt ist, den Namen verwenden
-  } else {
-    return ''; // Fallback, wenn weder String noch Objekt
   }
 
-  const nameParts = contactName.split(' ');
-  const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
-  const lastInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
-  return `${firstInitial}${lastInitial}`;
-}
+  getInitials(contact: any): string {
+    let contactName = '';
 
-getContactColor(contact: any): string {
-  if (typeof contact === 'object' && contact.color) {
-    return contact.color; // Wenn es ein Objekt mit einer Farbe ist
-  } else if (typeof contact === 'string') {
+    if (typeof contact === 'string') {
+      contactName = contact; // Wenn es ein String ist
+    } else if (typeof contact === 'object' && contact.name) {
+      contactName = contact.name; // Wenn es ein Objekt ist, den Namen verwenden
+    } else {
+      return ''; // Fallback, wenn weder String noch Objekt
+    }
+
+    const nameParts = contactName.split(' ');
+    const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
+    const lastInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
+    return `${firstInitial}${lastInitial}`;
   }
-  return '#ccc'; // Standardfarbe, wenn nichts gefunden wird
-}
+
+  getContactColor(contact: any): string {
+    if (typeof contact === 'object' && contact.color) {
+      return contact.color; // Wenn es ein Objekt mit einer Farbe ist
+    } else if (typeof contact === 'string') {
+    }
+    return '#ccc'; // Standardfarbe, wenn nichts gefunden wird
+  }
+
+  myFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const date = (d || new Date());
+    date.setHours(0, 0, 0, 0);
+
+    return date >= today;
+  };
+
+  formattingDate() {
+    if (this.task.dueDate) {
+      const formattedDate = this.task.dueDate.toISOString().split('T')[0];
+      this.task.dueDate = formattedDate as unknown as Date;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  // ---------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  onSubmit(form: any) {
+    
+    this.formattingDate();
+
+    if (form.valid) {
+      this.task.subtasks = this.createdSubtasks;
+
+      this.taskService.updateTask(this.task.id, this.task).subscribe({
+        next: (response) => {
+          console.log('Task created successfully:', response);
+          this.isEditMode = false;
+        },
+        error: (error) => {
+          console.error('Error creating task:', error);
+        }
+      });
+    }
+  }
+
+  editTask() {
+    this.isEditMode = true;
+  }
   
+
+  onInputFocus(): void {
+    this.isInputFocused = true;
+    console.log('Input focused:', this.isInputFocused);
+  }
+
+  onInputBlur(): void {
+    this.isInputFocused = false;
+    console.log('Input blurred:', this.isInputFocused);
+  }
+
+  addSubtask() {
+    console.log('Subtask hinzufügen gestartet');
+    console.log('Aktuelle Subtasks:', this.createdSubtasks);
+    if (this.inputSubtask.trim() !== '') {
+      const newSubtask = {
+        id: this.createdSubtasks.length + 1, // einfache ID, du kannst auch eine bessere Lösung finden
+        title: this.inputSubtask.trim(),
+        status: 'in-progress' as 'in-progress' | 'completed', // Standardstatus oder benutzerdefiniert
+      };
+      this.createdSubtasks.push(newSubtask);
+      this.inputSubtask = ''; // Eingabefeld zurücksetzen
+    }
+  }
+  
+
+  clearInputField() {
+    console.log("Clear Button Clicked");
+    this.inputSubtask = '';
+  }
+
+  deleteSubtask(index: number) {
+    this.createdSubtasks.splice(index, 1);
+  }
+
+  editSubtask(index: number) {
+    this.inputSubtask = this.createdSubtasks[index].title;
+    this.editingIndex = index;
+  }
+
+  updateSubtask() {
+    if (this.editingIndex !== null) {
+      this.createdSubtasks[this.editingIndex].title = this.inputSubtask;
+      this.editingIndex = null;
+      this.inputSubtask = '';
+    }
+  }
+
 }

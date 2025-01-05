@@ -1,4 +1,4 @@
-<mat-card-content style="cursor: pointer;">
+<section *ngIf="!isEditMode" class="section-show-task">
 
     <div class="card-content">
         <div class="top-container">
@@ -35,8 +35,117 @@
         <div class="button-container">
             <div class="btn1" (click)="deleteTask(task.id)"><mat-icon>delete</mat-icon><span>Delete</span></div>
             <div class="line"></div>
-            <div class="btn2" (click)="openEditTaskDialog(task)"><mat-icon>edit</mat-icon><span>Edit</span></div>
+            <div class="btn2" (click)="editTask()"><mat-icon>edit</mat-icon><span>Edit</span></div>
         </div>
 
     </div>
-</mat-card-content>
+</section>
+
+
+
+<!-- ------------------------ -->
+
+
+
+<section  *ngIf="isEditMode" class="section-edit-task">
+    <div class="headline">
+        <h1>Add Task</h1>
+    </div>
+
+    <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)">
+        <div class="input-container">
+            <div class="input-section-left">
+
+                <mat-label>Title<span class="star">*</span></mat-label>
+                <mat-form-field>
+                    <input matInput placeholder="Enter a title" name="title" [(ngModel)]="task.title" required>
+                </mat-form-field>
+
+                <mat-label>Description</mat-label>
+                <mat-form-field>
+                    <textarea matInput placeholder="Enter a Description" name="description"
+                        [(ngModel)]="task.description"></textarea>
+                </mat-form-field>
+
+                <mat-label>Contacts</mat-label>
+                <mat-form-field>
+                    <mat-select placeholder="Select contacts to assign"
+                        [(ngModel)]="task.assignedContacts" name="contacts" multiple>
+                        <mat-option *ngFor="let contact of contacts"  [value]="contact">
+                            {{ contact.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="input-section-right">
+
+                <mat-label>Due date<span class="star">*</span></mat-label>
+                <mat-form-field class="example-full-width">
+                    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" placeholder="dd/mm/yyyy"
+                        name="dueDate" [(ngModel)]="task.dueDate" required>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-label>Priority</mat-label>
+                <mat-button-toggle-group [(ngModel)]="task.priority" aria-label="Font Style" name="priority"
+                    style="margin-bottom: 20px;">
+                    <mat-button-toggle value="urgent">Urgent</mat-button-toggle>
+                    <mat-button-toggle value="medium">Medium</mat-button-toggle>
+                    <mat-button-toggle value="low">Low</mat-button-toggle>
+                </mat-button-toggle-group>
+
+                <mat-label>Category<span class="star">*</span></mat-label>
+                <mat-form-field>
+                    <mat-select [(ngModel)]="task.category" name="category" required placeholder="Select task category">
+                        <mat-option value="Technical">Technical Task</mat-option>
+                        <mat-option value="User_Story">User Story</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-label>Subtasks</mat-label>
+                <mat-form-field>
+                    <input [ngModelOptions]="{standalone: true}" #input matInput placeholder="Add new subtask"
+                        [(ngModel)]="inputSubtask" (focus)="onInputFocus()" (blur)="onInputBlur()">
+                    <!-- Button, um neuen Subtask hinzuzufügen -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="!isInputFocused && editingIndex === null"
+                        (mousedown)="addSubtask()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <!-- Button, um Eingabefeld zu leeren -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="isInputFocused && editingIndex === null"
+                        (mousedown)="clearInputField()">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                    <!-- Button, um neuen Subtask hinzuzufügen -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="isInputFocused && editingIndex === null"
+                        (mousedown)="addSubtask()">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                    <!-- Button, um bearbeiteten Subtask zu speichern -->
+                    <button type="button" matSuffix mat-icon-button *ngIf="editingIndex !== null"
+                        (click)="updateSubtask()">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- Subtask-Liste -->
+                <div class="subtask-list">
+                    <div *ngFor="let createdSubtask of createdSubtasks; let i = index" class="subtask">
+                        <span>• {{ createdSubtask.title }}</span>
+                        <div class="subtask-icons">
+                            <mat-icon class="subtask-icon-edit" (click)="editSubtask(i)">edit</mat-icon>
+                            <mat-icon class="subtask-icon-delete" (click)="deleteSubtask(i)">delete</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-field">
+            <button type="submit" class="create-btn" mat-stroked-button [disabled]="!taskForm.valid">
+                Ok <img src="assets/icons/check-btn.svg" alt="">
+            </button>
+        </div>
+    </form>
+</section>

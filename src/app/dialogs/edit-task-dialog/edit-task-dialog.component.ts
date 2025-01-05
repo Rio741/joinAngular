@@ -21,13 +21,13 @@ import { Contact } from '../../models/contact.model';
   selector: 'app-edit-task-dialog',
   providers: [provideNativeDateAdapter(), TaskService],
   imports: [MatSelectModule, MatButtonModule, MatIconModule, MatInputModule,
-    MatFormFieldModule, MatListModule, CommonModule, FormsModule, MatSelectModule,
+    MatFormFieldModule, MatListModule, CommonModule, FormsModule,
     MatCheckboxModule, MatButtonToggleModule, ReactiveFormsModule, MatDatepickerModule],
   templateUrl: './edit-task-dialog.component.html',
   styleUrl: './edit-task-dialog.component.scss'
 })
 export class EditTaskDialogComponent {
-  task: Task;
+    task: Task;
     isInputFocused: boolean = false;
     selectedContacts: string[] = [];
     newSubtask: string = '';
