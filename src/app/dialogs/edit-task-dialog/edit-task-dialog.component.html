@@ -1,7 +1,6 @@
 <section>
     <div class="headline">
-        <h1>Add Task</h1> <button class="close-btn" mat-icon-button
-            (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+        <h1>Add Task</h1>
     </div>
 
     <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)">
@@ -24,13 +23,11 @@
                     <mat-select placeholder="Select contacts to assign" [(value)]="selectedContacts"
                         [(ngModel)]="task.assignedContacts" name="contacts" multiple>
                         <mat-option *ngFor="let contact of contacts" [value]="contact">
-                            {{ contact }}
+                            {{ contact.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-
-            <div class="parting-line"></div>
 
             <div class="input-section-right">
 
@@ -52,9 +49,9 @@
 
                 <mat-label>Category<span class="star">*</span></mat-label>
                 <mat-form-field>
-                    <mat-select [(ngModel)]="task.category" name="category" required>
-                        <mat-option value="technical">Technical Task</mat-option>
-                        <mat-option value="userStory">User Story</mat-option>
+                    <mat-select [(ngModel)]="task.category" name="category" required placeholder="Select task category">
+                        <mat-option value="Technical">Technical Task</mat-option>
+                        <mat-option value="User_Story">User Story</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -96,7 +93,6 @@
                 </div>
             </div>
         </div>
-
         <div class="bottom-field">
             <button type="submit" class="create-btn" mat-stroked-button [disabled]="!taskForm.valid">
                 Ok <img src="assets/icons/check-btn.svg" alt="">

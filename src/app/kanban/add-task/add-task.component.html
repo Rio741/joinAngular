@@ -23,7 +23,7 @@
                     <mat-select placeholder="Select contacts to assign" [(value)]="selectedContacts"
                         [(ngModel)]="task.assignedContacts" name="contacts" multiple>
                         <mat-option *ngFor="let contact of contacts" [value]="contact">
-                            {{ contact }}
+                            {{ contact.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

@@ -17,13 +17,13 @@
 
             <div class="contacts">
                 <div *ngFor="let contact of task.assignedContacts" class="contact">
-                    <div class="small-circle"><span>{{ getInitials(contact)
+                    <div [style.background-color]="getContactColor(contact)" class="small-circle"><span>{{ getInitials(contact)
                             }}</span></div>
-                    <span class="name">{{contact}}</span>
+                    <span class="name">{{contact.name}}</span>
                 </div>
             </div>
         </div>
-        <div class="subtask-container">
+        <div class="subtask-container" *ngIf="task.subtasks && task.subtasks.length > 0">
             <span class="title-color">Subtasks</span>
 
             <div *ngFor="let subtask of task.subtasks" class="subtask">

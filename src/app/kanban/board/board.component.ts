@@ -45,6 +45,8 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     // Tasks von der API abrufen, wenn die Komponente geladen wird
     this.loadTasks();
+
+   
   }
 
   formatCategoryName(category: string): string {
@@ -150,12 +152,28 @@ export class BoardComponent implements OnInit {
   }
 
 
-  getInitials(contactName: string): string {
+  getInitials(contact: any): string {
+    let contactName = '';
+  
+    if (typeof contact === 'string') {
+      contactName = contact; // Wenn es ein String ist
+    } else if (typeof contact === 'object' && contact.name) {
+      contactName = contact.name; // Wenn es ein Objekt ist, den Namen verwenden
+    } else {
+      return ''; // Fallback, wenn weder String noch Objekt
+    }
+  
     const nameParts = contactName.split(' ');
     const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
     const lastInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
     return `${firstInitial}${lastInitial}`;
   }
-
-
+  
+  getContactColor(contact: any): string {
+    if (typeof contact === 'object' && contact.color) {
+      return contact.color; // Wenn es ein Objekt mit einer Farbe ist
+    } else if (typeof contact === 'string') {
+    }
+    return '#ccc'; // Standardfarbe, wenn nichts gefunden wird
+  }
 }

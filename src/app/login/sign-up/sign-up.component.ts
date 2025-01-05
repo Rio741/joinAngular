@@ -9,6 +9,8 @@ import { RouterModule, Router } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { SucessButtonDialogComponent } from '../../dialogs/sucess-button-dialog/sucess-button-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -19,12 +21,13 @@ import { AuthService } from '../../services/auth.service';
 })
 
 export class SignUpComponent {
-  constructor(private authService: AuthService, private router: Router) {}
-
+  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) { }
+  dialogRef: any;
+  isRegistrationSuccessful = false;
   isChecked = false;
   signupForm = new FormGroup(
     {
-      username: new FormControl('', [Validators.required, Validators.minLength(3),this.nameValidator]),
+      username: new FormControl('', [Validators.required, Validators.minLength(3), this.nameValidator]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confirmPassword: new FormControl('', Validators.required),
@@ -32,14 +35,20 @@ export class SignUpComponent {
     { validators: this.matchPasswordValidator.bind(this) }
   );
 
+  openAddTaskDialog() {
+    this.dialogRef = this.dialog.open(SucessButtonDialogComponent, {
+    });
+
+  }
+
   matchPasswordValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
-   // Benutzerdefinierte Validierung für den Namen
-   nameValidator(control: AbstractControl): ValidationErrors | null {
+  // Benutzerdefinierte Validierung für den Namen
+  nameValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     // Überprüfen, ob der Name aus mindestens zwei Wörtern besteht
     const namePattern = /^[a-zA-Z]+(\s[a-zA-Z]+)+$/;
@@ -82,14 +91,16 @@ export class SignUpComponent {
     const result = username.replace(/\s+/g, '_');
     return result;
   }
-  
+
+
+
   onRegister() {
     if (this.signupForm.valid && this.isChecked) {
       const username = this.covertUsername();
       const email = this.signupForm.get('email')?.value as string;
       const password = this.signupForm.get('password')?.value as string;
       const confirmPassword = this.signupForm.get('confirmPassword')?.value as string;
-      
+
       // AuthService für Registrierung aufrufen
       this.authService.register(username, email, password, confirmPassword).subscribe(
         (response) => {
@@ -102,11 +113,15 @@ export class SignUpComponent {
           sessionStorage.setItem('user_data', JSON.stringify(userData));
           this.authService.setToken(response.token);
           this.authService.setLoggedIn(true);
-          this.router.navigate(['/kanban/summary']);
-        },
-        (error) => {
-          console.error('Fehler bei der Registrierung', error);
-          alert('Die Registrierung ist fehlgeschlagen. Bitte versuchen Sie es später erneut.');
+
+          // Dialog nach erfolgreicher Registrierung öffnen
+          this.openAddTaskDialog();
+
+          // Umleitung nach 3 Sekunden
+          setTimeout(() => {
+            this.dialogRef.close();
+            this.router.navigate(['/kanban/summary']);
+          }, 2000);
         }
       );
     } else {

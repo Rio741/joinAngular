@@ -6,6 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { ContactService } from '../../services/contact.service';
+import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-edit-contact-dialog',
@@ -16,13 +18,46 @@ import { MatInputModule } from '@angular/material/input';
 
 export class EditContactDialogComponent {
   contact: any;
+  contacts: Contact[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<EditContactDialogComponent>) {
-    this.contact = { ...data }; // Daten klonen, um das Original nicht zu überschreiben
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<EditContactDialogComponent>,
+    private contactService: ContactService
+  ) {
+    this.contact = { ...data };
   }
 
-  saveChanges() {
-    this.dialogRef.close(this.contact); // Gibt die geänderten Daten zurück
+  saveChanges(): void {
+    this.contactService.updateContact(this.contact.id, this.contact).subscribe(
+      (updatedContact) => {
+        console.log('Contact updated successfully:', updatedContact);
+        this.dialogRef.close(updatedContact);
+      },
+      (error) => {
+        console.error('Error updating contact:', error);
+      }
+    );
+  }
+
+  deleteContact(contact: Contact): void {
+    this.contactService.deleteContact(contact.id).subscribe(
+      () => {
+        this.contacts = this.contacts.filter(c => c.id !== contact.id);
+        console.log(`Kontakt ${contact.name} wurde gelöscht.`);
+        this.dialogRef.close();
+      },
+      (error) => {
+        console.error('Fehler beim Löschen des Kontakts', error);
+      }
+    );
+  }
+
+  getInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase())
+      .join('');
   }
 
   closeDialog(): void {

@@ -1,6 +1,7 @@
 <mat-card>
     <div class="new-contact-container">
-        <button class="new-contact-btn" (click)="openAddContactDialog()">Add new contact<mat-icon>person_add</mat-icon></button>
+        <button class="new-contact-btn" (click)="openAddContactDialog()">Add new
+            contact<mat-icon>person_add</mat-icon></button>
     </div>
     <mat-list>
         <ng-container *ngFor="let group of groupedContacts | keyvalue">
@@ -9,16 +10,18 @@
             <mat-divider></mat-divider>
 
             <!-- Namen unter dem Buchstaben -->
-            <mat-list-item *ngFor="let contact of group.value" (click)="selectContact(contact)" [ngClass]="{ 'open': selectedContact === contact }">
-                
-                    <div class="small-circle"><span>{{ getInitials(contact.name || '') }}</span></div>
-                    <div class="list-contact-details">
-                        <span class="name" matListItemTitle>{{ contact.name }}</span>
-                        <span class="mail-adress" matListItemLine>{{ contact.email }}</span>
-                    </div>
-                
+            <mat-list-item *ngFor="let contact of group.value" (click)="selectContact(contact)"
+                [ngClass]="{ 'open': selectedContact === contact }">
+
+                <div [style.background-color]="contact.color" class="small-circle"><span>{{ getInitials(contact.name ||
+                        '') }}</span></div>
+                <div class="list-contact-details">
+                    <span class="name" matListItemTitle>{{ contact.name }}</span>
+                    <span class="mail-adress" matListItemLine>{{ contact.email }}</span>
+                </div>
+
             </mat-list-item>
-            
+
         </ng-container>
     </mat-list>
 </mat-card>
@@ -32,14 +35,15 @@
     <div *ngIf="selectedContact" class="contact-under-section">
         <div class="contact-detail-container">
             <div class="name-edit-container">
-                <div class="big-circle"><span>{{ getInitials(selectedContact.name || '') }}</span></div>
+                <div class="big-circle" [style.background-color]="selectedContact.color"><span>{{
+                        getInitials(selectedContact.name || '') }}</span></div>
                 <div class="name-and-options">
                     <h2>{{ selectedContact.name }}</h2>
                     <div class="options">
                         <div class="option" (click)="openEditContactDialog()">
-                           <mat-icon>edit</mat-icon><span>Edit</span>
+                            <mat-icon>edit</mat-icon><span>Edit</span>
                         </div>
-                        <div class="option">
+                        <div class="option" (click)="deleteContact(selectedContact)">
                             <mat-icon>delete</mat-icon><span>Delete</span>
                         </div>
                     </div>
@@ -54,8 +58,12 @@
             </div>
             <div class="detail-box">
                 <span class="detail-name">Phone</span>
-                <span class="number">Not available</span>
+                <span class="number">{{ selectedContact.phone_number }}</span>
             </div>
         </div>
     </div>
+    <div class="add-contact-button" *ngIf="buttonVisible">
+        Kontakt erstellt!
+      </div>
+      
 </div>

@@ -1,5 +1,5 @@
 import { CommonModule, NgForOf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -7,11 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddContactDialogComponent } from '../../dialogs/add-contact-dialog/add-contact-dialog.component';
 import { EditContactDialogComponent } from '../../dialogs/edit-contact-dialog/edit-contact-dialog.component';
+import { ContactService } from '../../services/contact.service';
+import { Contact } from '../../models/contact.model';
 
-export interface Contact {
-  name: string;
-  email: string;
-}
+
 
 @Component({
   selector: 'app-contacts',
@@ -27,50 +26,53 @@ export interface Contact {
   styleUrls: ['./contacts.component.scss'],
 })
 
-export class ContactsComponent {
-constructor(private dialog: MatDialog) {}
+export class ContactsComponent implements OnInit {
 
-openAddContactDialog() {
-    const dialogRef = this.dialog.open(AddContactDialogComponent, {
-    });
+  constructor(private dialog: MatDialog, private contactService: ContactService) { }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Dialog geschlossen mit Ergebnis:', result);
-      } else {
-        console.log('Dialog geschlossen ohne Ergebnis.');
-      }
-    });
-  }
-
-  openEditContactDialog(){
-    const dialogRef = this.dialog.open(EditContactDialogComponent, {
-      data: this.selectedContact,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Dialog geschlossen mit Ergebnis:', result);
-      } else {
-        console.log('Dialog geschlossen ohne Ergebnis.');
-      }
-    });
-  }
-
-
-  contacts: Contact[] = [
-    { name: 'Alice Smith', email: 'alice@gmx.de' },
-    { name: 'John Doe', email: 'john@gmx.de' },
-    { name: 'Charlie Brown', email: 'charlie@gmx.de' },
-    { name: 'Bob Martin', email: 'bob@gmx.de' },
-    { name: 'Alice Smith', email: 'alice@gmx.de' },
-    { name: 'John Doe', email: 'john@gmx.de' },
-    { name: 'Charlie Brown', email: 'charlie@gmx.de' },
-    { name: 'Bob Martin', email: 'bob@gmx.de' },
-  ];
-
+  contacts: Contact[] = [];
   selectedContact: Contact | null = null;
+  buttonVisible: boolean = false;
 
+  ngOnInit(): void {
+    this.loadContacts();
+  }
+
+  handleContactCreated(newContact: Contact): void {
+    this.loadContacts(); // Kontakte neu laden
+    this.showSlideInButton(); // Button anzeigen
+  }
+
+  showSlideInButton(): void {
+    this.buttonVisible = true; // Button sichtbar machen
+    setTimeout(() => {
+      this.buttonVisible = false; // Button nach 3 Sekunden ausblenden (optional)
+    }, 3000); // 3 Sekunden Timer
+  }
+
+  loadContacts(): void {
+    this.contactService.getContacts().subscribe(
+      (data) => {
+        this.contacts = data;
+      },
+      (error) => {
+        console.error('Fehler beim Laden der Kontakte', error);
+      }
+    );
+  }
+
+  deleteContact(contact: Contact): void {
+    this.contactService.deleteContact(contact.id).subscribe(
+      () => {
+        this.contacts = this.contacts.filter(c => c.id !== contact.id);
+        console.log(`Kontakt ${contact.name} wurde gelöscht.`);
+      },
+      (error) => {
+        console.error('Fehler beim Löschen des Kontakts', error);
+      }
+    );
+
+  }
 
   get groupedContacts(): { [key: string]: Contact[] } {
     return this.contacts
@@ -96,4 +98,29 @@ openAddContactDialog() {
       .join('');
   }
 
+  openAddContactDialog(): void {
+    const dialogRef = this.dialog.open(AddContactDialogComponent);
+
+    dialogRef.afterClosed().subscribe((newContact: Contact | undefined) => {
+      if (newContact) {
+        this.handleContactCreated(newContact); // Neuer Kontakt wird verarbeitet
+      }
+    });
+  }
+  
+
+  openEditContactDialog(): void {
+    const dialogRef = this.dialog.open(EditContactDialogComponent, {
+      data: this.selectedContact,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog geschlossen mit Ergebnis:', result);
+        this.loadContacts();
+      } else {
+        console.log('Dialog geschlossen ohne Ergebnis.');
+      }
+    });
+  }
 }

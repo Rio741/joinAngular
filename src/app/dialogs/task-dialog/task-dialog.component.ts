@@ -1,4 +1,4 @@
-import { NgFor, NgStyle } from '@angular/common';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, Inject, model, OnInit, Output } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.co
 
 @Component({
   selector: 'app-task-dialog',
-  imports: [NgStyle, NgFor, MatCardContent, MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule],
+  imports: [NgStyle, NgFor,NgIf, MatCardContent, MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule],
   templateUrl: './task-dialog.component.html',
   styleUrl: './task-dialog.component.scss'
 })
@@ -30,12 +30,6 @@ export class TaskDialogComponent {
     this.dialogRef.close(id);
   }
 
-  getInitials(contactName: string): string {
-    const nameParts = contactName.split(' ');
-    const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
-    const lastInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
-    return `${firstInitial}${lastInitial}`;
-  }
 
   inProgressSubtasksCount(subtasks: any[]): number {
     return subtasks.filter(subtask => subtask.status === 'done').length;
@@ -89,5 +83,29 @@ export class TaskDialogComponent {
     );
 }
 
+getInitials(contact: any): string {
+  let contactName = '';
+
+  if (typeof contact === 'string') {
+    contactName = contact; // Wenn es ein String ist
+  } else if (typeof contact === 'object' && contact.name) {
+    contactName = contact.name; // Wenn es ein Objekt ist, den Namen verwenden
+  } else {
+    return ''; // Fallback, wenn weder String noch Objekt
+  }
+
+  const nameParts = contactName.split(' ');
+  const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
+  const lastInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
+  return `${firstInitial}${lastInitial}`;
+}
+
+getContactColor(contact: any): string {
+  if (typeof contact === 'object' && contact.color) {
+    return contact.color; // Wenn es ein Objekt mit einer Farbe ist
+  } else if (typeof contact === 'string') {
+  }
+  return '#ccc'; // Standardfarbe, wenn nichts gefunden wird
+}
   
 }

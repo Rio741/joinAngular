@@ -2,13 +2,14 @@ section {
     display: flex;
     flex-direction: column;
     padding: 32px;
-    max-height: 80vh;
-    overflow-y: auto; 
+    overflow-y: auto;
+    height: 80vh;
+    max-height: 800px;
 }
 
 .headline {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     gap: 30px;
     padding-bottom: 46px;
 
@@ -26,19 +27,17 @@ section {
     gap: 38px;
 }
 
-.parting-line {
-    border: solid 1px #D1D1D1;
-    border-radius: 20px;
-}
 
 .input-section-left {
     display: flex;
     flex-direction: column;
+    width: 440px;
 }
 
 .input-section-right {
     display: flex;
     flex-direction: column;
+    width: 440px;
 }
 
 .custom-dropdown .mat-select-panel {
@@ -50,7 +49,6 @@ section {
 ::ng-deep.mat-mdc-text-field-wrapper {
     background-color: white !important;
     cursor: pointer;
-    // height: 48px !important;
     border-radius: 10px !important;
     border: solid 1px #D1D1D1;
 }
@@ -79,14 +77,18 @@ mat-label {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 4px;
+    margin-top: -16px;
+    margin-bottom: 6px;
+    min-height: 68px;
+    max-height: 100px;
+    overflow-y: auto;
 
     .subtask {
         display: flex;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        padding: 0 20px;
+        padding: 4px 20px;
         border-radius: 10px;
         height: 28px;
 
@@ -127,34 +129,6 @@ mat-label {
 .bottom-field {
     display: flex;
     justify-content: flex-end;
-    max-width: 956px;
-    padding-top: 68px;
-}
-
-.button-group {
-    display: flex;
-    gap: 16px;
-}
-
-.clear-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #F6F7F8 !important;
-    color: #2A3647 !important;
-    font-size: 20px;
-    font-weight: 400;
-    border-radius: 8px;
-    padding: 12px 14px;
-    cursor: pointer;
-    border: solid 1px #2A3647;
-    gap: 8px;
-
-    &:hover {
-        color: #29ABE2 !important;
-        border-color: #29ABE2;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-    }
 }
 
 .create-btn {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
+import { ContactService } from '../../services/contact.service';
+import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-add-task',
@@ -24,20 +26,17 @@ import { TaskService } from '../../services/task.service';
   styleUrl: './add-task.component.scss'
 })
 
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
   task: Task;
   isInputFocused: boolean = false;
-  contacts: string[] = ['Rio Stenger', 'Peter Parker', 'Siomon Paulaner', 'Frank Homm', 'Sneaker rigo'];
   selectedContacts: string[] = [];
   newSubtask: string = '';
   newSubtasks: string[] = [];
   AnewSubtasks: { title: string, status: 'in-progress' | 'completed' }[] = []; 
   editingIndex: number | null = null;
-  
- 
-  
+  contacts: Contact[] = [];
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, private contactService: ContactService) {
     this.task = new Task(
       '',
       '',
@@ -47,6 +46,21 @@ export class AddTaskComponent {
       '',
       [],
       'todo'
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadContacts();
+  }
+
+  loadContacts(): void {
+    this.contactService.getContacts().subscribe(
+      (data) => {
+        this.contacts = data;
+      },
+      (error) => {
+        console.error('Fehler beim Laden der Kontakte', error);
+      }
     );
   }
 
@@ -67,14 +81,11 @@ export class AddTaskComponent {
   }
 
   onSubmit(form: any) {
-
     this.AnewSubtasks = this.newSubtasks.map((title) => ({
       title: title.trim(),
       status: 'in-progress',
     }));
     this.task.subtasks = [...this.AnewSubtasks];
-
-
     console.log(this.task)
     this.formattingDate();
 
@@ -114,17 +125,12 @@ export class AddTaskComponent {
     console.log('Input blurred:', this.isInputFocused);
   }
   
-
   addSubtask() {
     console.log('Subtask hinzufügen gestartet');
-    // Füge hier den aktuellen Status und alle relevanten Daten ein:
     console.log('Aktuelle Subtasks:', this.newSubtasks);
-    // Deine Logik zum Hinzufügen des Subtasks
     if (this.newSubtask.trim() !== '') {
       this.newSubtasks.push(this.newSubtask.trim());
       this.newSubtask = '';
-      
-      
     }
   }
 
@@ -149,7 +155,6 @@ export class AddTaskComponent {
       this.newSubtask = '';
     }
   }
-
 }
 
 
