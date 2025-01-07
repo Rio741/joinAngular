@@ -6,7 +6,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskService } from '../../services/task.service';
-import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -42,10 +41,11 @@ export class TaskDialogComponent implements OnInit {
 
   isEditMode: boolean = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<TaskDialogComponent>, private taskService: TaskService, private dialog: MatDialog, private contactService: ContactService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<TaskDialogComponent>,
+    private taskService: TaskService, private dialog: MatDialog, private contactService: ContactService) {
     this.task = data;
-
   }
+
   readonly checked = model(false);
   task: any;
 
@@ -55,15 +55,12 @@ export class TaskDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContacts();
-    
     this.loadSubtasks();
-    console.log('ausgewählte subtasks:', this.createdSubtasks);
   }
 
   loadSubtasks() {
     this.createdSubtasks = this.task.subtasks
   }
-
 
   loadContacts(): void {
     this.contactService.getContacts().subscribe(
@@ -84,42 +81,19 @@ export class TaskDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  openEditTaskDialog(task: any) {
-    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
-      data: task
-    });
-
-    dialogRef.afterClosed().subscribe((result: number) => {
-      if (result) {
-        // Wenn eine ID zurückgegeben wird, lösche den Task
-        this.deleteTask(result);
-      } else {
-        console.log('Dialog wurde ohne Ergebnis geschlossen');
-      }
-    });
-  }
-
   formatCategoryName(category: string): string {
-    // Überprüfen, ob die Kategorie "User_Story" ist
     if (category === 'User_Story') {
-      // Ersetze das "_" durch ein Leerzeichen
       return category.replace('_', ' ');
     } else {
-      // Andernfalls einfach den Originalwert zurückgeben
       return category;
     }
   }
 
 
   updateSubtaskStatus(taskId: number, subtask: any): void {
-    // Status basierend auf dem Checkbox-Status setzen
     const newStatus = subtask.status === 'done' ? 'inProgress' : 'done';
-
-    // Subtask-Status aktualisieren
     this.taskService.updateSubtaskStatus(subtask.id, newStatus).subscribe(
       (updatedSubtask) => {
-        console.log('Subtask Status erfolgreich aktualisiert:', updatedSubtask);
-        // Subtask lokal aktualisieren
         subtask.status = updatedSubtask.status;
       },
       (error) => {
@@ -132,11 +106,11 @@ export class TaskDialogComponent implements OnInit {
     let contactName = '';
 
     if (typeof contact === 'string') {
-      contactName = contact; // Wenn es ein String ist
+      contactName = contact;
     } else if (typeof contact === 'object' && contact.name) {
-      contactName = contact.name; // Wenn es ein Objekt ist, den Namen verwenden
+      contactName = contact.name;
     } else {
-      return ''; // Fallback, wenn weder String noch Objekt
+      return '';
     }
 
     const nameParts = contactName.split(' ');
@@ -145,12 +119,14 @@ export class TaskDialogComponent implements OnInit {
     return `${firstInitial}${lastInitial}`;
   }
 
+
   getContactColor(contact: any): string {
     if (typeof contact === 'object' && contact.color) {
-      return contact.color; // Wenn es ein Objekt mit einer Farbe ist
+      return contact.color;
     } else if (typeof contact === 'string') {
+      return contact;
     }
-    return '#ccc'; // Standardfarbe, wenn nichts gefunden wird
+    return '#ccc';
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -164,17 +140,15 @@ export class TaskDialogComponent implements OnInit {
 
   formattingDate() {
     if (this.task.dueDate) {
-      const formattedDate = this.task.dueDate.toISOString().split('T')[0];
-      this.task.dueDate = formattedDate as unknown as Date;
+      if (typeof this.task.dueDate === 'string' && !isNaN(Date.parse(this.task.dueDate))) {
+        return;
+      }
+      if (this.task.dueDate instanceof Date) {
+        const formattedDate = this.task.dueDate.toISOString().split('T')[0];
+        this.task.dueDate = formattedDate as unknown as Date;
+      }
     }
   }
-
-
-
-
-
-
-
 
 
 
@@ -186,26 +160,15 @@ export class TaskDialogComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
   onSubmit(form: any) {
-    
     this.formattingDate();
 
     if (form.valid) {
       this.task.subtasks = this.createdSubtasks;
-
       this.taskService.updateTask(this.task.id, this.task).subscribe({
         next: (response) => {
-          console.log('Task created successfully:', response);
           this.isEditMode = false;
+          this.dialogRef.close();
         },
         error: (error) => {
           console.error('Error creating task:', error);
@@ -217,35 +180,29 @@ export class TaskDialogComponent implements OnInit {
   editTask() {
     this.isEditMode = true;
   }
-  
 
   onInputFocus(): void {
     this.isInputFocused = true;
-    console.log('Input focused:', this.isInputFocused);
   }
 
   onInputBlur(): void {
     this.isInputFocused = false;
-    console.log('Input blurred:', this.isInputFocused);
   }
 
   addSubtask() {
-    console.log('Subtask hinzufügen gestartet');
-    console.log('Aktuelle Subtasks:', this.createdSubtasks);
     if (this.inputSubtask.trim() !== '') {
       const newSubtask = {
-        id: this.createdSubtasks.length + 1, // einfache ID, du kannst auch eine bessere Lösung finden
+        id: this.createdSubtasks.length + 1,
         title: this.inputSubtask.trim(),
-        status: 'in-progress' as 'in-progress' | 'completed', // Standardstatus oder benutzerdefiniert
+        status: 'in-progress' as 'in-progress' | 'completed',
       };
       this.createdSubtasks.push(newSubtask);
-      this.inputSubtask = ''; // Eingabefeld zurücksetzen
+      this.inputSubtask = '';
     }
   }
-  
+
 
   clearInputField() {
-    console.log("Clear Button Clicked");
     this.inputSubtask = '';
   }
 
@@ -265,5 +222,4 @@ export class TaskDialogComponent implements OnInit {
       this.inputSubtask = '';
     }
   }
-
 }

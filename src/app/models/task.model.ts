@@ -7,6 +7,6 @@ export class Task {
     public priority: 'urgent' | 'medium' | 'low',
     public category: string,
     public subtasks: { title: string, status: 'in-progress' | 'completed' }[],
-    public status: 'todo' | 'inProgress' | 'awaitFeedback' | 'done', 
-  ) {}
+    public status: 'todo' | 'inProgress' | 'awaitFeedback' | 'done',
+  ) { }
 }

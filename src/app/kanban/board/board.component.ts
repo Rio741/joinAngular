@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
 import { ProgressBarMode, MatProgressBarModule } from '@angular/material/progress-bar';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { NgForOf, NgIf, NgStyle } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
@@ -27,39 +27,31 @@ import { TaskDialogComponent } from '../../dialogs/task-dialog/task-dialog.compo
 })
 
 export class BoardComponent implements OnInit {
-  mode: ProgressBarMode = 'determinate';
-  value = 50;
-  bufferValue = 75;
-
-  tasks = {
-    todo: [] as Task[],          // Leeres Array für die To-Do-Spalte
-    inProgress: [] as Task[],    // Leeres Array für die In-Progress-Spalte
-    awaitFeedback: [] as Task[], // Leeres Array für die Await Feedback-Spalte
-    done: [] as Task[]           // Leeres Array für die Done-Spalte
-  };
-
 
   constructor(private taskService: TaskService, private dialog: MatDialog,
     private cdRef: ChangeDetectorRef, private cdr: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-    // Tasks von der API abrufen, wenn die Komponente geladen wird
-    this.loadTasks();
+  mode: ProgressBarMode = 'determinate';
+  value = 50;
+  bufferValue = 75;
+  tasks = {
+    todo: [] as Task[],
+    inProgress: [] as Task[],
+    awaitFeedback: [] as Task[],
+    done: [] as Task[]
+  };
 
-   
+  ngOnInit(): void {
+    this.loadTasks();
   }
 
   formatCategoryName(category: string): string {
-    // Überprüfen, ob die Kategorie "User_Story" ist
     if (category === 'User_Story') {
-      // Ersetze das "_" durch ein Leerzeichen
       return category.replace('_', ' ');
     } else {
-      // Andernfalls einfach den Originalwert zurückgeben
       return category;
     }
   }
-  
 
   inProgressSubtasksCount(subtasks: any[]): number {
     return subtasks.filter(subtask => subtask.status === 'done').length;
@@ -71,17 +63,14 @@ export class BoardComponent implements OnInit {
     return totalSubtasks > 0 ? (inProgressCount / totalSubtasks) * 100 : 0;
   }
 
-
-  openAddTaskDialog() {
+  openAddTaskDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog geschlossen mit Ergebnis:', result);
-      } else {
-        console.log('Dialog geschlossen ohne Ergebnis.');
-      }
+        this.loadTasks();
+      } 
     });
   }
 
@@ -92,18 +81,16 @@ export class BoardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: number) => {
       if (result) {
-        // Wenn eine ID zurückgegeben wird, lösche den Task
+        this.loadTasks();
         this.deleteTask(result);
-      } else {
-        console.log('Dialog wurde ohne Ergebnis geschlossen');
-      }
+      } 
     });
   }
 
   deleteTask(taskId: number): void {
     this.taskService.deleteTask(taskId).subscribe({
       next: () => {
-        console.log('Task erfolgreich gelöscht!');
+        this.loadTasks();
       },
       error: (err) => {
         console.error('Fehler beim Löschen der Aufgabe:', err);
@@ -114,20 +101,17 @@ export class BoardComponent implements OnInit {
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
-        console.log('Empfangene Aufgaben:', tasks);
-
         this.filterTasksByStatus(tasks);
       }
     });
   }
 
-  private filterTasksByStatus(tasks: Task[]): void {
+  filterTasksByStatus(tasks: Task[]): void {
     this.tasks.todo = tasks.filter(task => task.status === 'todo');
     this.tasks.inProgress = tasks.filter(task => task.status === 'inProgress');
     this.tasks.awaitFeedback = tasks.filter(task => task.status === 'awaitFeedback');
     this.tasks.done = tasks.filter(task => task.status === 'done');
   }
-
 
   drop(event: CdkDragDrop<any[]>): void {
     const movedTask = event.item.data;
@@ -144,36 +128,38 @@ export class BoardComponent implements OnInit {
 
     this.taskService.updateTaskStatus(movedTask.id, movedTask.status).subscribe(
       (updatedTask) => {
-        console.log('Updated Task:', updatedTask);
-
         this.loadTasks();
       }
     );
   }
 
-
   getInitials(contact: any): string {
     let contactName = '';
-  
+
     if (typeof contact === 'string') {
-      contactName = contact; // Wenn es ein String ist
+      contactName = contact;
     } else if (typeof contact === 'object' && contact.name) {
-      contactName = contact.name; // Wenn es ein Objekt ist, den Namen verwenden
+      contactName = contact.name;
     } else {
-      return ''; // Fallback, wenn weder String noch Objekt
+      return '';
     }
-  
+
     const nameParts = contactName.split(' ');
     const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
     const lastInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
     return `${firstInitial}${lastInitial}`;
   }
-  
+
   getContactColor(contact: any): string {
     if (typeof contact === 'object' && contact.color) {
-      return contact.color; // Wenn es ein Objekt mit einer Farbe ist
+      return contact.color;
     } else if (typeof contact === 'string') {
     }
-    return '#ccc'; // Standardfarbe, wenn nichts gefunden wird
+    return '#ccc';
+  }
+
+  changeToUppercase(str: string): string {
+    if (!str) return ''; // Falls der String leer oder undefined ist
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }

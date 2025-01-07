@@ -31,7 +31,6 @@ export class EditContactDialogComponent {
   saveChanges(): void {
     this.contactService.updateContact(this.contact.id, this.contact).subscribe(
       (updatedContact) => {
-        console.log('Contact updated successfully:', updatedContact);
         this.dialogRef.close(updatedContact);
       },
       (error) => {
@@ -44,7 +43,6 @@ export class EditContactDialogComponent {
     this.contactService.deleteContact(contact.id).subscribe(
       () => {
         this.contacts = this.contacts.filter(c => c.id !== contact.id);
-        console.log(`Kontakt ${contact.name} wurde gelöscht.`);
         this.dialogRef.close();
       },
       (error) => {

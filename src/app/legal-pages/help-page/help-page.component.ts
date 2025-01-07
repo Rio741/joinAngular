@@ -9,8 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './help-page.component.html',
   styleUrl: './help-page.component.scss'
 })
+
 export class HelpPageComponent {
-  constructor(private location: Location) {}
+
+  constructor(private location: Location) { }
 
   goBack() {
     this.location.back();

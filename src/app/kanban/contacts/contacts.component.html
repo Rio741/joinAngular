@@ -1,27 +1,21 @@
-<mat-card>
+<mat-card [ngClass]="{ 'show': !selectedContact || screenWidth > 1080 }">
     <div class="new-contact-container">
         <button class="new-contact-btn" (click)="openAddContactDialog()">Add new
             contact<mat-icon>person_add</mat-icon></button>
     </div>
     <mat-list>
         <ng-container *ngFor="let group of groupedContacts | keyvalue">
-            <!-- Buchstabe -->
             <div mat-subheader>{{ group.key }}</div>
             <mat-divider></mat-divider>
-
-            <!-- Namen unter dem Buchstaben -->
             <mat-list-item *ngFor="let contact of group.value" (click)="selectContact(contact)"
                 [ngClass]="{ 'open': selectedContact === contact }">
-
                 <div [style.background-color]="contact.color" class="small-circle"><span>{{ getInitials(contact.name ||
                         '') }}</span></div>
                 <div class="list-contact-details">
                     <span class="name" matListItemTitle>{{ contact.name }}</span>
                     <span class="mail-adress" matListItemLine>{{ contact.email }}</span>
                 </div>
-
             </mat-list-item>
-
         </ng-container>
     </mat-list>
 </mat-card>
@@ -64,6 +58,9 @@
     </div>
     <div class="add-contact-button" *ngIf="buttonVisible">
         Kontakt erstellt!
-      </div>
-      
+    </div>
 </div>
+<button style="display: none;" class="new-contact-btn mobile-new-contact-btn" (click)="openAddContactDialog()"><mat-icon
+        class="add-icon">person_add</mat-icon></button>
+
+<button  [ngClass]="{ 'show': !selectedContact || screenWidth > 1080 }" (click)="mobileGoBack()" mat-icon-button class="arrow-back"><mat-icon matSuffix (click)="mobileGoBack()">arrow_back</mat-icon></button>

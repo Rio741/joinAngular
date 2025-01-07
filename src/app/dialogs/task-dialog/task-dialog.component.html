@@ -1,5 +1,5 @@
+<!-- TASK-DIALOG-SECTION -->
 <section *ngIf="!isEditMode" class="section-show-task">
-
     <div class="card-content">
         <div class="top-container">
             <div [ngStyle]="{
@@ -17,7 +17,8 @@
 
             <div class="contacts">
                 <div *ngFor="let contact of task.assignedContacts" class="contact">
-                    <div [style.background-color]="getContactColor(contact)" class="small-circle"><span>{{ getInitials(contact)
+                    <div [style.background-color]="getContactColor(contact)" class="small-circle"><span>{{
+                            getInitials(contact)
                             }}</span></div>
                     <span class="name">{{contact.name}}</span>
                 </div>
@@ -37,19 +38,17 @@
             <div class="line"></div>
             <div class="btn2" (click)="editTask()"><mat-icon>edit</mat-icon><span>Edit</span></div>
         </div>
-
     </div>
 </section>
 
 
-
-<!-- ------------------------ -->
-
-
-
-<section  *ngIf="isEditMode" class="section-edit-task">
+<!-- EDIT-DIALOG-SECTION -->
+<section *ngIf="isEditMode" class="section-edit-task">
     <div class="headline">
         <h1>Add Task</h1>
+        <button class="close-btn" mat-icon-button (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
     </div>
 
     <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)">
@@ -69,9 +68,9 @@
 
                 <mat-label>Contacts</mat-label>
                 <mat-form-field>
-                    <mat-select placeholder="Select contacts to assign"
-                        [(ngModel)]="task.assignedContacts" name="contacts" multiple>
-                        <mat-option *ngFor="let contact of contacts"  [value]="contact">
+                    <mat-select placeholder="Select contacts to assign" [(ngModel)]="task.assignedContacts"
+                        name="contacts" multiple>
+                        <mat-option *ngFor="let contact of contacts" [value]="contact">
                             {{ contact.name }}
                         </mat-option>
                     </mat-select>

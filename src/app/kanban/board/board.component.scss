@@ -81,7 +81,6 @@ h1 {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 16px;
 }
 
 .row-headline-box {
@@ -110,8 +109,6 @@ h1 {
     color: #42526E;
     font-weight: 700;
 }
-
-// --------------------
 
 .user-category {
     display: flex;
@@ -166,8 +163,6 @@ h1 {
     color: white;
 }
 
-
-
 .card-bottom-container {
     display: flex;
     align-items: center;
@@ -202,9 +197,6 @@ h1 {
     }
 }
 
-
-// ------------
-
 .empty-container {
     display: flex;
     justify-content: center;
@@ -219,4 +211,79 @@ h1 {
     color: #A8A8A8;
 }
 
+.card-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
+@media (max-width: 1080px) {
+
+    section {
+        padding: 32px;
+    }
+}
+
+@media (max-width: 760px) {
+
+    .main-content {
+        flex-direction: column;
+        margin-top: 32px;
+    }
+
+    .head-content {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+
+    .head-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .mat-mdc-form-field {
+        width: 100% !important;
+    }
+
+    .add-task-btn {
+        display: none;
+    }
+
+    .mobile-add-task-btn {
+        display: flex !important;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+    }
+
+    .board-and-btn {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-box {
+        flex-direction: row;
+        overflow-x: auto;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .mat-mdc-card-content {
+        width: 252px;
+    }
+}
+
+@media (max-width: 560px) {
+
+    section {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+}

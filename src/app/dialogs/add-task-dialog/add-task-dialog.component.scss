@@ -1,3 +1,11 @@
+// .mat-mdc-icon-button {
+//     position: absolute !important;
+//     right: 6px;
+//     bottom: 6px;
+// }
+
+
+
 section {
     display: flex;
     flex-direction: column;
@@ -7,7 +15,7 @@ section {
 .headline {
     display: flex;
     justify-content: space-between;
-    gap: 30px;
+    align-items: center;
     padding-bottom: 46px;
 
     h1 {
@@ -50,7 +58,6 @@ section {
 ::ng-deep.mat-mdc-text-field-wrapper {
     background-color: white !important;
     cursor: pointer;
-    // height: 48px !important;
     border-radius: 10px !important;
     border: solid 1px #D1D1D1;
 }
@@ -79,14 +86,18 @@ mat-label {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 4px;
+    margin-top: -16px;
+    margin-bottom: 6px;
+    min-height: 68px;
+    max-height: 100px;
+    overflow-y: auto;
 
     .subtask {
         display: flex;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        padding: 0 20px;
+        padding: 4px 20px;
         border-radius: 10px;
         height: 28px;
 
@@ -124,11 +135,12 @@ mat-label {
     }
 }
 
+
 .bottom-field {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     max-width: 956px;
-    padding-top: 68px;
 }
 
 .button-group {
@@ -171,4 +183,93 @@ mat-label {
         background-color: #29ABE2 !important;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
     }
+}
+
+mat-label{
+    padding-top: 12px;
+}
+
+.mat-button-toggle-group {
+    margin-bottom: 0 !important;
+}
+
+@media (max-width: 1080px) {
+
+    section{
+      overflow-y: auto;
+    height: 80vh;  
+    padding: 32px;
+    }
+
+   .input-container{
+    flex-direction: column;
+    gap: 0;
+    
+   }
+
+   .parting-line{
+    display: none;
+    gap: 0;
+   }
+
+   .required-text{
+    display: none;
+   }
+
+   .mobile-required-text{
+    display: flex !important;
+    padding-bottom: 50px;
+   }
+
+   .bottom-field{
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 0;
+    left: 32px;
+    right: 32px;
+    padding: 12px 0;
+    background-color: #F6F7F8;
+   }
+
+   .headline{
+    padding-bottom: 16px;
+   }
+
+   
+}
+
+@media (max-width: 560px) {
+
+section{
+    height: 100%;
+    width: 100vw;
+    border-radius: 0;
+}
+
+.input-container{
+    border-radius: 0;
+    padding: 0 18px;
+}
+
+.input-section-left{
+    width: auto;
+
+}
+
+.input-section-right{
+    width: auto;
+}
+
+.headline{
+    padding: 0 18px;
+    padding-bottom: 16px;
+    h1{
+
+        font-size: 48px;
+    }
+}
+
+.bottom-field{
+    right: 48px;
+}
 }

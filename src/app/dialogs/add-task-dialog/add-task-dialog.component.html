@@ -1,6 +1,7 @@
 <section>
     <div class="headline">
-        <h1>Add Task</h1> <button class="close-btn" mat-icon-button (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+        <h1>Add Task</h1>
+        <button class="close-btn" mat-icon-button (click)="closeDialog()"><mat-icon>close</mat-icon></button>
     </div>
 
     <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)">
@@ -23,7 +24,7 @@
                     <mat-select placeholder="Select contacts to assign" [(value)]="selectedContacts"
                         [(ngModel)]="task.assignedContacts" name="contacts" multiple>
                         <mat-option *ngFor="let contact of contacts" [value]="contact">
-                            {{ contact }}
+                            {{ contact.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -51,9 +52,9 @@
 
                 <mat-label>Category<span class="star">*</span></mat-label>
                 <mat-form-field>
-                    <mat-select [(ngModel)]="task.category" name="category" required>
-                        <mat-option value="technical">Technical Task</mat-option>
-                        <mat-option value="userStory">User Story</mat-option>
+                    <mat-select [(ngModel)]="task.category" name="category" required placeholder="Select task category">
+                        <mat-option value="Technical">Technical Task</mat-option>
+                        <mat-option value="User_Story">User Story</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -93,12 +94,12 @@
                     </div>
                 </div>
 
-
+                <div class="mobile-required-text" style="display: none;"><span class="star">*</span><span>This field is required</span></div>
             </div>
         </div>
 
         <div class="bottom-field">
-            <div><span class="star">*</span><span>This field is required</span></div>
+            <div class="required-text"><span class="star">*</span><span>This field is required</span></div>
             <div>
                 <div class="button-group">
                     <button type="button" class="clear-btn" (click)="clearForm(taskForm)">

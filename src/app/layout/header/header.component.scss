@@ -13,9 +13,8 @@ header {
 }
 
 .headline {
-    font-size: 20px;
-    font-weight: 400;
-    margin-left: 116px;
+    font-size: 16px;
+    margin-left: 68px;
 }
 
 .help-container {
@@ -26,7 +25,6 @@ header {
     img {
         cursor: pointer;
         transition: transform 0.3s ease, background-color 0.3s ease;
-
 
         &:hover {
             transform: scale(1.2);
@@ -81,5 +79,61 @@ header {
 }
 
 .mat-mdc-menu-item {
-   padding: 0 26px; 
+    padding: 0 26px;
+}
+
+.help-option{
+    display: none !important;
+}
+
+@media (max-width: 1080px) {
+    header {
+        left: 0;
+        width: 100%;
+        height: 80px;
+        justify-content: space-between;
+    }
+
+    .help-container{
+        display: none;
+    }
+
+    .logo-container{
+        display: flex !important;
+        margin-left: 16px;
+    }
+
+    .logo{
+        width: 32px;
+    }
+
+    .headline {
+       display: none;
+    }
+
+    .button-container {
+        margin-right: 16px;
+    }
+
+    .circle {
+        height: 40px;
+        width: 40px;
+        border-width: 2px;
+    }
+
+    .initials {
+        font-size: 18px;
+    }
+
+    ::ng-deep.menu-option {
+        font-size: 14px;
+    }
+
+    .mat-mdc-menu-item {
+        padding: 0 16px;
+    }
+
+    .help-option{
+        display: flex !important;
+    }
 }

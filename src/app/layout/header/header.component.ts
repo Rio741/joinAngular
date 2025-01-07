@@ -13,11 +13,12 @@ import { CommonModule } from '@angular/common';
 })
 
 export class HeaderComponent implements OnInit {
+
+  constructor(public authService: AuthService) { }
+
   userData: any;
   userInitials: string = '';
   convertedName: string = '';
-
-  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadUserData();

@@ -10,9 +10,11 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './privacy-policy.component.html',
   styleUrl: './privacy-policy.component.scss'
 })
+
 export class PrivacyPolicyComponent {
-  constructor(private location: Location, public authService: AuthService) {}
-  
+
+  constructor(private location: Location, public authService: AuthService) { }
+
   goBack() {
     this.location.back();
   }

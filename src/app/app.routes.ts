@@ -14,13 +14,9 @@ export const routes: Routes = [
     { path: '', component: LogInComponent },
     { path: 'login', component: LogInComponent },
     { path: 'sign-up', component: SignUpComponent },
-    { path: 'privacy-policy', component: PrivacyPolicyComponent },
-    { path: 'legal-notice', component: LegalNoticeComponent },
-
-    // Layout-Wrapper für Kanban-Seiten
     {
         path: 'kanban',
-        component: LayoutComponent,  // Die Layout-Komponente wird als Wrapper verwendet
+        component: LayoutComponent,
         children: [
             { path: 'add-task', component: AddTaskComponent },
             { path: 'board', component: BoardComponent },

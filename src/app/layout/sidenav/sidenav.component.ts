@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss'
 })
+
 export class SidenavComponent {
+
   constructor(public authService: AuthService) {}
 }

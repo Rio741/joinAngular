@@ -1,10 +1,12 @@
+// TASK-DIALOG-SECTION
 .section-show-task {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 80vh;
     max-height: 800px;
     cursor: pointer;
+    min-width: 360px;
+    max-width: 600px;
 }
 
 .card-content {
@@ -14,7 +16,7 @@
     gap: 16px;
 }
 
-.top-container{
+.top-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -65,7 +67,7 @@
     font-weight: 400;
 }
 
-.title-color{
+.title-color {
     color: #2A3647;
     font-size: 20px;
     font-weight: 400;
@@ -83,7 +85,7 @@
     font-weight: 400;
 }
 
-.subtask{
+.subtask {
     margin-left: 8px;
     font-size: 16px;
     font-weight: 400;
@@ -123,7 +125,7 @@
     }
 }
 
-.name{
+.name {
     font-size: 19px;
     font-weight: 400;
 }
@@ -134,36 +136,36 @@
     gap: 14px;
 }
 
-.button-container{
+.button-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 6px;
 }
 
-.btn1{
+.btn1 {
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
         color: #29ABE2;
     }
 }
 
-.btn2{
+.btn2 {
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
         color: #29ABE2;
     }
 }
 
-.line{
+.line {
     display: flex;
     width: 1px;
     height: 24px;
@@ -180,24 +182,7 @@
 
 
 
-
-
-
-// ----------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// EDIT-DIALOG-SECTION
 .section-edit-task {
     display: flex;
     flex-direction: column;
@@ -205,14 +190,15 @@
     overflow-y: auto;
     height: 80vh;
     max-height: 800px;
-    
+
 }
 
 .headline {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 30px;
-    padding-bottom: 46px;
+    padding-bottom: 12px;
 
     h1 {
         font-size: 61px;
@@ -225,7 +211,6 @@
 .input-container {
     display: flex;
     flex-direction: column;
-    gap: 38px;
 }
 
 
@@ -254,14 +239,6 @@
     border: solid 1px #D1D1D1;
 }
 
-// ::ng-deep.mat-mdc-form-field-infix {
-//     padding-top: 12px !important;
-// }
-
-// ::ng-deep.mat-mdc-form-field-icon-suffix {
-//     padding: 0px 0px 8px 4px !important;
-// }
-
 mat-button-toggle {
     width: 100%;
 }
@@ -278,7 +255,7 @@ mat-label {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: -16px;
+    margin-top: 10px;
     margin-bottom: 6px;
     min-height: 68px;
     max-height: 100px;
@@ -293,21 +270,15 @@ mat-label {
         border-radius: 10px;
         height: 28px;
 
-        // Icons ausblenden, wenn nicht gehobert wird
         .subtask-icons {
             display: none;
-            // Hier kannst du noch weitere Styles für die Icons anpassen
         }
 
         &:hover {
             background-color: #D1D1D1;
 
-            // Icons sichtbar machen, wenn über die Subtask gehobert wird
             .subtask-icons {
                 display: flex;
-
-
-
             }
         }
     }
@@ -347,3 +318,43 @@ mat-label {
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
     }
 }
+
+mat-label{
+    padding-top: 18px;
+}
+
+.mat-button-toggle-group {
+    margin-bottom: 0 !important;
+}
+
+@media (max-width: 600px) {
+    .user-title{
+        font-size: 36px;
+    }
+    
+    .section-show-task {
+        min-width: 318px;
+    }
+    
+    .section-edit-task{
+        min-width: 318px;
+        align-items: center;
+    }
+    .headline {
+        h1 {
+            font-size: 36px;
+        }
+    }
+    
+    .input-section-left {
+        width: auto;
+    }
+    
+    .input-section-right {
+        width: auto;
+    }
+
+  form{
+    width: 100%;
+  }
+    }

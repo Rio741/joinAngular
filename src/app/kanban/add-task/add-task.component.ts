@@ -15,6 +15,7 @@ import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
 import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -32,11 +33,11 @@ export class AddTaskComponent implements OnInit {
   selectedContacts: string[] = [];
   newSubtask: string = '';
   newSubtasks: string[] = [];
-  AnewSubtasks: { title: string, status: 'in-progress' | 'completed' }[] = []; 
+  selectedSubtasks: { title: string, status: 'in-progress' | 'completed' }[] = []; 
   editingIndex: number | null = null;
   contacts: Contact[] = [];
 
-  constructor(private taskService: TaskService, private contactService: ContactService) {
+  constructor(private taskService: TaskService, private contactService: ContactService, private router: Router) {
     this.task = new Task(
       '',
       '',
@@ -81,18 +82,17 @@ export class AddTaskComponent implements OnInit {
   }
 
   onSubmit(form: any) {
-    this.AnewSubtasks = this.newSubtasks.map((title) => ({
+    this.selectedSubtasks = this.newSubtasks.map((title) => ({
       title: title.trim(),
       status: 'in-progress',
     }));
-    this.task.subtasks = [...this.AnewSubtasks];
-    console.log(this.task)
+    this.task.subtasks = [...this.selectedSubtasks];
     this.formattingDate();
 
     if (form.valid) {
       this.taskService.createTask(this.task).subscribe({
         next: (response) => {
-          console.log('Task created successfully:', response);
+          this.router.navigate(['/kanban/board']);
         },
         error: (error) => {
           console.error('Error creating task:', error);
@@ -117,17 +117,13 @@ export class AddTaskComponent implements OnInit {
 
   onInputFocus(): void {
     this.isInputFocused = true;
-    console.log('Input focused:', this.isInputFocused);
   }
   
   onInputBlur(): void {
     this.isInputFocused = false;
-    console.log('Input blurred:', this.isInputFocused);
   }
   
   addSubtask() {
-    console.log('Subtask hinzufügen gestartet');
-    console.log('Aktuelle Subtasks:', this.newSubtasks);
     if (this.newSubtask.trim() !== '') {
       this.newSubtasks.push(this.newSubtask.trim());
       this.newSubtask = '';
@@ -135,7 +131,6 @@ export class AddTaskComponent implements OnInit {
   }
 
   clearInputField() {
-    console.log("Clear Button Clicked");
     this.newSubtask = '';
   }
 

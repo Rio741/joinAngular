@@ -53,7 +53,7 @@ export class TaskService {
   }
 
   updateTask(id: number, contact: Task): Observable<Task> {
-          const headers = this.getAuthHeaders();
-          return this.http.put<Task>(`${this.apiUrl}${id}/`, contact, { headers });
-      }
+    const headers = this.getAuthHeaders();
+    return this.http.put<Task>(`${this.apiUrl}${id}/`, contact, { headers });
+  }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -16,7 +16,17 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './log-in.component.scss'
 })
 
-export class LogInComponent {
+export class LogInComponent implements OnInit {
+  showContainer = false;
+  ngOnInit(): void {
+    setTimeout(() => {
+      // CSS-Klasse für Animation hinzufügen (falls nicht direkt über CSS animiert wird)
+      const logo = document.querySelector('.logo');
+      if (logo) {
+        logo.classList.add('animate-logo');
+      }
+    }, 100); // Verzögerung, um sicherzustellen, dass das Element geladen ist
+  }
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -24,7 +34,6 @@ export class LogInComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
-
 
   get emailFormControl() {
     return this.loginForm.get('email') as FormControl;
@@ -34,36 +43,27 @@ export class LogInComponent {
     return this.loginForm.get('password') as FormControl;
   }
 
-  isLogoAnimationComplete = false;
-
-  onLogoAnimationEnd() {
-    this.isLogoAnimationComplete = true;
-  }
-
   onSubmit() {
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value as string;
       const password = this.loginForm.get('password')?.value as string;
-  
-      // AuthService zum Login aufrufen
+
       this.authService.login(email, password).subscribe(
         response => {
-          console.log('response', response);
-  
           if (response && response.token) {
-            // Speichern der Benutzerinformationen (Token + Benutzerdaten) im localStorage
             const userData = {
               token: response.token,
               username: response.username,
               email: response.email,
             };
             sessionStorage.setItem('user_data', JSON.stringify(userData));
-            this.authService.setLoggedIn(true); 
-            // Optional: Token separat speichern, falls benötigt
+            this.authService.setLoggedIn(true);
             this.authService.setToken(response.token);
-  
-            // Weiterleitung zur Summary-Seite
-            this.router.navigate(['/kanban/summary']);
+            if (window.innerWidth < 1080) {
+              this.router.navigate(['/kanban/summary'], { queryParams: { showContainer: true } });
+            } else {
+              this.router.navigate(['/kanban/summary']);
+            }
           } else {
             alert('Falsche Login-Daten!');
           }
@@ -73,5 +73,27 @@ export class LogInComponent {
         }
       );
     }
+  }
+
+  onGuestLogin() {
+    this.authService.guestLogin().subscribe({
+      next: (response: any) => {
+        if (response && response.access) {
+          this.authService.saveGuestUserData(response.access);
+
+          if (window.innerWidth < 1080) {
+            this.router.navigate(['/kanban/summary'], { queryParams: { showContainer: true } });
+          } else {
+            this.router.navigate(['/kanban/summary']);
+          }
+        } else {
+          alert('Gastzugang fehlgeschlagen.');
+        }
+      },
+      error: (error) => {
+        console.error('Gast-Login fehlgeschlagen', error);
+        alert('Gastzugang fehlgeschlagen. Bitte versuchen Sie es erneut.');
+      }
+    });
   }
 }  

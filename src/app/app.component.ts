@@ -8,13 +8,13 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
 export class AppComponent implements OnInit {
   title = 'join-frontend';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    // Überprüft und setzt den Login-Status beim Start der App
     this.authService.checkLoginStatus();
   }
 }

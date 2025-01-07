@@ -50,12 +50,9 @@ export class AddContactDialogComponent {
       console.error('Name und Email sind erforderlich');
       return;
     }
-  
     this.contact.color = this.generateRandomColor();
-  
     this.contactService.createContact(this.contact).subscribe(
       (newContact) => {
-        console.log('Kontakt erfolgreich erstellt:', newContact);
         this.dialogRef.close(newContact);
       },
       (error) => {

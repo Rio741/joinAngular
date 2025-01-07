@@ -8,10 +8,10 @@ import { Contact } from '../models/contact.model';
 })
 
 export class ContactService {
-    private apiUrl = 'http://127.0.0.1:8000/contacts/';
 
     constructor(private http: HttpClient) { }
 
+    private apiUrl = 'http://127.0.0.1:8000/contacts/';
 
     private getAuthHeaders(): HttpHeaders {
         const user_data = sessionStorage.getItem('user_data');
@@ -22,7 +22,6 @@ export class ContactService {
         return new HttpHeaders().set('Authorization', `Token ${userToken}`);
     }
 
-    // Alle Kontakte abrufen
     getContacts(): Observable<Contact[]> {
         const headers = this.getAuthHeaders();
         return this.http.get<Contact[]>(this.apiUrl, { headers });
@@ -33,22 +32,17 @@ export class ContactService {
         return this.http.delete<void>(`${this.apiUrl}${id}/`, { headers });
     }
 
-
-    // Einen einzelnen Kontakt abrufen
     getContact(id: number): Observable<Contact> {
         return this.http.get<Contact>(`${this.apiUrl}/${id}`);
     }
 
-   createContact(contact: Contact): Observable<Contact> {
-       const headers = this.getAuthHeaders();
-       return this.http.post<Contact>(this.apiUrl, contact, { headers });
-     }
+    createContact(contact: Contact): Observable<Contact> {
+        const headers = this.getAuthHeaders();
+        return this.http.post<Contact>(this.apiUrl, contact, { headers });
+    }
 
-    // Kontakt aktualisieren
     updateContact(id: number, contact: Contact): Observable<Contact> {
         const headers = this.getAuthHeaders();
         return this.http.put<Contact>(`${this.apiUrl}${id}/`, contact, { headers });
     }
-
-
 }

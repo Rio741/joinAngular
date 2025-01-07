@@ -11,7 +11,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './legal-notice.component.scss'
 })
 export class LegalNoticeComponent {
-  constructor(private location: Location, public authService: AuthService) {}
+
+  constructor(private location: Location, public authService: AuthService) { }
 
   goBack() {
     this.location.back();

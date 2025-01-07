@@ -1,5 +1,4 @@
 <section>
-
     <div class="headline">
         <h1>Join 360</h1>
         <div class="line"></div>
@@ -7,7 +6,7 @@
     </div>
 
     <div class="dashboard-content">
-        <div class="metrics-container">
+        <div class="metrics-container" *ngIf="!showNameContainer">
             <div class="metrics-double-box">
                 <div class="box" [routerLink]="'/kanban/board'">
                     <div class="circle">
@@ -70,5 +69,10 @@
             <span class="greeting">{{ greeting }},</span>
             <span class="name">{{convertedName}}</span>
         </div>
+    </div>
+    <div *ngIf="showNameContainer" class="mobile-name-container"
+    [class.visible]="showNameContainer">
+        <span class="greeting">{{ greeting }},</span>
+        <span class="name">{{convertedName}}</span>
     </div>
 </section>

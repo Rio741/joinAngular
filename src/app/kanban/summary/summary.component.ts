@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TaskService } from '../../services/task.service';
+import { CommonModule, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-summary',
-  imports: [RouterModule],
+  imports: [RouterModule, NgIf, CommonModule],
   templateUrl: './summary.component.html',
   styleUrl: './summary.component.scss'
 })
 
 export class SummaryComponent implements OnInit {
+
+  constructor(private route: ActivatedRoute, private taskService: TaskService) { }
+
   userData: any;
   convertedName: string = '';
   greeting: string = '';
@@ -20,10 +24,21 @@ export class SummaryComponent implements OnInit {
   inProgressTasks: number = 0;
   awaitingFeedbackTasks: number = 0;
   upcomingDate: any;
-
-  constructor(private taskService: TaskService) { }
+  showNameContainer: boolean = false;
 
   ngOnInit(): void {
+    if (window.innerWidth < 1080) {
+      this.route.queryParams.subscribe(params => {
+        if (params['showContainer']) {
+          this.showNameContainer = true;
+
+          setTimeout(() => {
+            this.showNameContainer = false;
+          }, 2000);
+        }
+      });
+    }
+
     this.loadUserData();
     this.convertUsername();
     this.triggerAnimation();
@@ -60,7 +75,7 @@ export class SummaryComponent implements OnInit {
         this.tasksInBoard = tasks.filter(task => task.title).length;
         this.inProgressTasks = tasks.filter(task => task.status === 'inProgress').length;
         this.awaitingFeedbackTasks = tasks.filter(task => task.status === 'awaitFeedback').length;
-       
+
         this.findNextTask();
       },
       error: (err) => {
