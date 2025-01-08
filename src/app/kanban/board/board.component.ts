@@ -40,6 +40,8 @@ export class BoardComponent implements OnInit {
     awaitFeedback: [] as Task[],
     done: [] as Task[]
   };
+  searchQuery: string = '';
+
 
   ngOnInit(): void {
     this.loadTasks();
@@ -159,7 +161,21 @@ export class BoardComponent implements OnInit {
   }
 
   changeToUppercase(str: string): string {
-    if (!str) return ''; // Falls der String leer oder undefined ist
+    if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  filterTasks(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+    if (!query) {
+      this.loadTasks();
+      return;
+    }
+    this.tasks = {
+      todo: this.tasks.todo.filter((task) => task.title.toLowerCase().includes(query)),
+      inProgress: this.tasks.inProgress.filter((task) => task.title.toLowerCase().includes(query)),
+      awaitFeedback: this.tasks.awaitFeedback.filter((task) => task.title.toLowerCase().includes(query)),
+      done: this.tasks.done.filter((task) => task.title.toLowerCase().includes(query))
+    };
   }
 }

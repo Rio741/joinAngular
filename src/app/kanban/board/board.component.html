@@ -7,8 +7,9 @@
     </div>
     <div class="head-content">
       <mat-form-field>
-        <input matInput placeholder="Find Task">
-        <button matSuffix mat-icon-button>
+        <input matInput placeholder="Find Task" [(ngModel)]="searchQuery"
+        (input)="filterTasks()">
+        <button matSuffix mat-icon-button (click)="filterTasks()">
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>
