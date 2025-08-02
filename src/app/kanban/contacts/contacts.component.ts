@@ -47,7 +47,7 @@ export class ContactsComponent implements OnInit {
 
   selectContact(contact: Contact) {
     this.selectedContact = contact;
-    
+
     if (this.selectedContact) {
       setTimeout(() => {
         document.querySelector('.contact-under-section')?.classList.add('show');
@@ -57,7 +57,7 @@ export class ContactsComponent implements OnInit {
     if (this.screenWidth <= 1080 && this.selectedContact) {
       document.querySelector('.contact-main-section')?.classList.add('d-flex');
       setTimeout(() => {
-        
+
         document.querySelector('.mat-mdc-card')?.classList.add('hide');
         document.querySelector('.contact-main-section')?.classList.add('content-padding');
       }, 10);
@@ -144,7 +144,7 @@ export class ContactsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.selectContact(result);
-      } 
+      }
     });
   }
 }

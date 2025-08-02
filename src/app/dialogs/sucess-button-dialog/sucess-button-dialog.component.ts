@@ -7,6 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './sucess-button-dialog.component.html',
   styleUrl: './sucess-button-dialog.component.scss'
 })
+
 export class SucessButtonDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<SucessButtonDialogComponent>

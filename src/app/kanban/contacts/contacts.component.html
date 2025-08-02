@@ -63,4 +63,5 @@
 <button style="display: none;" class="new-contact-btn mobile-new-contact-btn" (click)="openAddContactDialog()"><mat-icon
         class="add-icon">person_add</mat-icon></button>
 
-<button  [ngClass]="{ 'show': !selectedContact || screenWidth > 1080 }" (click)="mobileGoBack()" mat-icon-button class="arrow-back"><mat-icon matSuffix (click)="mobileGoBack()">arrow_back</mat-icon></button>
+<button [ngClass]="{ 'show': !selectedContact || screenWidth > 1080 }" (click)="mobileGoBack()" mat-icon-button
+    class="arrow-back"><mat-icon matSuffix (click)="mobileGoBack()">arrow_back</mat-icon></button>

@@ -9,7 +9,6 @@ import { ContactService } from '../../services/contact.service';
 import { FormsModule } from '@angular/forms';
 import { Contact } from '../../models/contact.model';
 
-
 @Component({
   selector: 'app-add-contact-dialog',
   imports: [MatFormField, MatIconModule, CommonModule, MatInputModule, MatButtonModule, FormsModule],
@@ -37,10 +36,9 @@ export class AddContactDialogComponent {
     const g = Math.floor(Math.random() * 128) + 127;
     const b = Math.floor(Math.random() * 128) + 127;
     
-    return `rgb(${r}, ${g}, ${b})`;  // Hier fehlte das Backtick
+    return `rgb(${r}, ${g}, ${b})`;
   }
   
-
   closeDialog(): void {
     this.dialogRef.close();
   }

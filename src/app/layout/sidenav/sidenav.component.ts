@@ -12,5 +12,5 @@ import { CommonModule } from '@angular/common';
 
 export class SidenavComponent {
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) { }
 }
